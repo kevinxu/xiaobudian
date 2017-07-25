@@ -21,6 +21,7 @@ bower_components/
 
 # Generate
 *.map
+app/css
 
 # Release
 app/build/
