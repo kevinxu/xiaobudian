@@ -1,0 +1,28 @@
+.u-radio{
+  display: inline-block;
+  vertical-align: middle;
+  width: .2rem;
+  height: .2rem;
+  background-color: transparent;
+  border: none;
+  background-image: url(/img/unchecked.png);
+  background-size: 100%;
+  &+span{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: .1rem;
+  }
+  &.checked{
+    background-image: url(/img/checked.png);
+  }
+}
+.radio-group{
+  font-size: .14rem;
+  color: #666;
+}
+.u-radio-wrap{
+  width: auto !important;
+  &+.u-radio-wrap{
+    margin-left: .22rem;
+  }
+}

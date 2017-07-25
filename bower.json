@@ -1,0 +1,39 @@
+{
+  "name": "xiaobudian",
+  "description": "云点餐",
+  "main": "server.js",
+  "authors": [
+    "Kevin <feng927.xu@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "http://www.baidu.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "framework7": "latest",
+    "js-md5": "md5#^0.4.1",
+    "requirejs": "latest"
+  },
+  "overrides": {
+    "framework7": {
+      "main": [
+        "dist/css/framework7.ios.min.css",
+        "dist/css/framework7.ios.colors.min.css",
+        "dist/css/framework7.material.min.css",
+        "dist/css/framework7.material.colors.min.css",
+        "dist/js/framework7.min.js",
+        "dist/js/framework7.min.js.map"
+      ]
+    },
+    "js-md5": {
+      "main": [
+        "build/md5.min.js"
+      ]
+    }
+  }
+}

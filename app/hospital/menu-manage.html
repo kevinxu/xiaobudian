@@ -1,0 +1,174 @@
+<div class="page page-menu-manage" data-page="menu-manage">
+  <div class="page-content">
+  	<div class="wrapper-main-content">
+  	<div id="wrapper-head">
+	  	<div>
+	  		<table id="wrapper-day" cellspacing="0" cellpadding="0">
+	  			<tr>
+	  				<td><a href="#" id="btn-day-mon" class="btn-day" data-day-sel="1">周一</a>
+	  				<hr class="day-highlight-line" /></td>
+	  				<td><a href="#" id="btn-day-tue" class="btn-day" data-day-sel="2">周二</a></td>
+	  				<td><a href="#" id="btn-day-wed" class="btn-day" data-day-sel="3">周三</a></td>
+	  				<td><a href="#" id="btn-day-thu" class="btn-day" data-day-sel="4">周四</a></td>
+	  				<td><a href="#" id="btn-day-fri" class="btn-day" data-day-sel="5">周五</a></td>
+	  				<td><a href="#" id="btn-day-sat" class="btn-day" data-day-sel="6">周六</a></td>
+	  				<td><a href="#" id="btn-day-sun" class="btn-day" data-day-sel="0">周日</a></td>
+	  			</tr>
+	  		</table>
+	  	</div>
+		<div>
+			<table id="wrap-meal-type" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+						<a href="#" class="tab-link btn-meal-type" data-meal-sel="breakfast">早餐</a>
+						<hr class="meal-highlight-line" />
+					</td>
+					<td><a href="#" class="tab-link btn-meal-type" data-meal-sel="lunch">中餐</a></td>
+					<td><a href="#" class="tab-link btn-meal-type" data-meal-sel="dinner">晚餐</a></td>
+				</tr>
+			</table>
+		</div>
+		<hr />
+	</div>
+	<div id="wrapper-content-area">
+		<div id="wrapper-leftarea">
+			<table id="dish-type-block">
+				<tr>
+					<td id="btn-regular-food" class="wrapper-btn-dish btn-active"><a href="#wrapper-regular-food" class="tab-link btn-dish-type" data-dish-type-sel="regular">普食</a></td>
+				</tr>
+				<tr>
+					<td id="btn-semi-food" class="wrapper-btn-dish"><a href="#wrapper-semifluid-food" class="tab-link btn-dish-type" data-dish-type-sel="semi-fluid">半流质</a></td>
+				</tr>
+				<tr>
+					<td id="btn-fluid-food" class="wrapper-btn-dish"><a href="#wrapper-fluid-food" class="tab-link btn-dish-type" data-dish-type-sel="fluid">流质</a></td>
+				</tr>
+				<tr>
+					<td id="btn-medical-food" class="wrapper-btn-dish"><a href="#wrapper-medical-food" class="tab-link btn-dish-type" data-dish-type-sel="medical-food">治疗饮食</a></td>
+				</tr>
+			</table>
+		</div>
+		<div id="wrapper-rightarea">
+			<div id="wrapper-regular-food" class="content-block-dish-type">
+				<div class="content-block-title title-dish-type">
+					<span>普食</span>
+					<a href="#" id="btn-add-regular" class="wrapper-icon-add"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="regularMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content swipeout">
+									<div class="swipeout-content item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+									</div>
+							  		<div class="swipeout-actions-right">
+										<a href="#" class="dish-delete swipeout-delete bg-orange" data-id="{{_id}}">删除</a>
+										<a href="#" class="dish-edit bg-lightblue" data-id="{{_id}}" data-dish-name="{{dishName}}" data-price="{{price}}" data-dish-type="regular">编辑</a>
+									</div>						
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-semifluid-food" class="content-block-dish-type">
+				<div class="content-block-title title-dish-type">				
+					<span>半流质</span>
+					<a href="#" id="btn-add-semifluid" class="wrapper-icon-add"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="semiMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content swipeout">
+									<div class="swipeout-content item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+									</div>
+							  		<div class="swipeout-actions-right">
+										<a href="#" class="dish-delete swipeout-delete bg-orange" data-id="{{_id}}">删除</a>
+										<a href="#" class="dish-edit bg-lightblue" data-id="{{_id}}" data-dish-name="{{dishName}}" data-price="{{price}}" data-dish-type="regular">编辑</a>
+									</div>						
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-fluid-food" class="content-block-dish-type">
+				<div class="content-block-title title-dish-type">
+					<span>流质</span>
+					<a href="#" id="btn-add-fluid" class="wrapper-icon-add"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="fluidMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content swipeout">
+									<div class="swipeout-content item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+									</div>
+							  		<div class="swipeout-actions-right">
+										<a href="#" class="dish-delete swipeout-delete bg-orange" data-id="{{_id}}">删除</a>
+										<a href="#" class="dish-edit bg-lightblue" data-id="{{_id}}" data-dish-name="{{dishName}}" data-price="{{price}}" data-dish-type="regular">编辑</a>
+									</div>						
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-medical-food" class="content-block-dish-type">
+				<div class="content-block-title title-dish-type">	
+					<span>治疗饮食</span>
+					<a href="#" id="btn-add-medical" class="wrapper-icon-add"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="medicalMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content swipeout">
+									<div class="swipeout-content item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+									</div>
+							  		<div class="swipeout-actions-right">
+										<a href="#" class="dish-delete swipeout-delete bg-orange" data-id="{{_id}}">删除</a>
+										<a href="#" class="dish-edit bg-lightblue" data-id="{{_id}}" data-dish-name="{{dishName}}" data-price="{{price}}" data-dish-type="regular">编辑</a>
+									</div>						
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+  	</div>
+  </div>
+</div>

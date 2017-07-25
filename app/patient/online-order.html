@@ -1,0 +1,186 @@
+<div class="page page-online-order navbar-fixed toolbar-fixed" data-page="online-order">
+  <div class="page-content">
+  	<div class="wrapper-main-content">
+  	<div id="wrapper-head">
+	  	<div id="title-page"><script type="text/template" id="hospInfoTpl">{{hospitalName}}-食堂点餐</script></div>
+	  	<div>
+	  		<table id="wrapper-day" cellspacing="0" cellpadding="0">
+	  			<tr>
+	  				<td><a href="#" id="btn-today" class="tab-link btn-day" data-day-sel="today"><script type="text/template" id="dayInfoTpl1">今天/{{today}}</script></a>
+	  				<hr class="day-highlight-line" /></td>
+	  				<td><a href="#" id="btn-tomorrow" class="tab-link btn-day" data-day-sel="tomorrow"><script type="text/template" id="dayInfoTpl2">明天/{{tomorrow}}</script></a></td>
+	  				<td><a href="#" id="btn-after-tomorrow" class="tab-link btn-day" data-day-sel="after-tomorrow"><script type="text/template" id="dayInfoTpl3">后天/{{afterTomorrow}}</script></a></td>
+	  			</tr>
+	  		</table>
+	  	</div>
+		<div>
+			<table id="wrap-meal-type" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+						<a href="#" class="tab-link btn-meal-type" data-day-sel="breakfast">早餐</a>
+						<hr class="meal-highlight-line" />
+					</td>
+					<td><a href="#" class="tab-link btn-meal-type" data-day-sel="lunch">中餐</a></td>
+					<td><a href="#" class="tab-link btn-meal-type" data-day-sel="dinner">晚餐</a></td>
+				</tr>
+			</table>
+		</div>
+		<hr />
+	</div>
+	<div id="wrapper-content-area">
+		<div id="wrapper-leftarea">
+			<table id="dish-type-block">
+				<tr>
+					<td id="btn-regular-food" class="wrapper-btn-dish btn-active"><a href="#wrapper-regular-food" class="tab-link btn-dish-type" data-dish-type-sel="regular">普食</a></td>
+				</tr>
+				<tr>
+					<td id="btn-semi-food" class="wrapper-btn-dish"><a href="#wrapper-semifluid-food" class="tab-link btn-dish-type" data-dish-type-sel="semi-fluid">半流质</a></td>
+				</tr>
+				<tr>
+					<td id="btn-fluid-food" class="wrapper-btn-dish"><a href="#wrapper-fluid-food" class="tab-link btn-dish-type" data-dish-type-sel="fluid">流质</a></td>
+				</tr>
+				<tr>
+					<td id="btn-medical-food" class="wrapper-btn-dish"><a href="#wrapper-medical-food" class="tab-link btn-dish-type" data-dish-type-sel="medical-food">治疗饮食</a></td>
+				</tr>
+			</table>
+		</div>
+		<div id="wrapper-rightarea">
+			<div id="wrapper-regular-food">
+				<div class="content-block-title title-dish-type">
+					<span>普食</span>
+					<a id="btn-help-regular" class="btn-help" href="#"><img class="help-icon" src="img/help.png" width="20" height="20"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="regularMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+										<div class="item-subtitle wrapper-plus-minus">
+											<span><a href="#" class="btn-minus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/minus.png" class="icon-minus" width="30" height="30"></a></span>
+											<span id="dish-{{_id}}" class="order-number">0</span>
+											<span><a href="#" class="btn-plus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/plus.png" class="icon-plus" width="30" height="30"></a></span>
+										</div>
+									</div>							
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-semifluid-food">
+				<div class="content-block-title title-dish-type">				
+					<span>半流质</span>
+					<a id="btn-help-semifluid" class="btn-help" href="#"><img class="help-icon" src="img/help.png" width="20" height="20"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="semiMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+										<div class="item-subtitle wrapper-plus-minus">
+											<span><a href="#" class="btn-minus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/minus.png" class="icon-minus" width="30" height="30"></a></span>
+											<span id="dish-{{_id}}" class="order-number">0</span>
+											<span><a href="#" class="btn-plus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/plus.png" class="icon-plus" width="30" height="30"></a></span>
+										</div>
+									</div>							
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-fluid-food">
+				<div class="content-block-title title-dish-type">
+					<span>流质</span>
+					<a id="btn-help-fluid" class="btn-help" href="#"><img class="help-icon" src="img/help.png" width="20" height="20"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="fluidMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+										<div class="item-subtitle wrapper-plus-minus">
+											<span><a href="#" class="btn-minus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/minus.png" class="icon-minus" width="30" height="30"></a></span>
+											<span id="dish-{{_id}}" class="order-number">0</span>
+											<span><a href="#" class="btn-plus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/plus.png" class="icon-plus" width="30" height="30"></a></span>
+										</div>
+									</div>							
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+			<div id="wrapper-medical-food">
+				<div class="content-block-title title-dish-type">	
+					<span>治疗饮食</span>
+					<a id="btn-help-medical" class="btn-help" href="#"><img class="help-icon" src="img/help.png" width="20" height="20"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<script type="text/template" id="medicalMenuInfoTpl">
+						<div class="list-block">
+							<ul>
+								{{#each this}}
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title-row">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-after">￥{{price}}</div>
+										</div>
+										<div class="item-subtitle wrapper-plus-minus">
+											<span><a href="#" class="btn-minus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/minus.png" class="icon-minus" width="30" height="30"></a></span>
+											<span id="dish-{{_id}}" class="order-number">0</span>
+											<span><a href="#" class="btn-plus" data-dish-id="{{_id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/plus.png" class="icon-plus" width="30" height="30"></a></span>
+										</div>
+									</div>							
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+  	</div>
+  	<div id="footer">
+  		<div class="bucket-area">
+  			<table class="wrapper-bucket-area">
+  				<tr>
+  					<td><a href="#"><span id="total-order-number" class="badge">0</span><br><img class="img-bucket" src="img/bucket.png" width="30" height="30"></a></td>
+  					<td id="txt-total-fee">共￥<span id="bill-number">0</span><br>配送到病房</td>
+  				</tr>
+  			</table>
+  		</div>
+  		<div class="btn-confirm-order"><a href="#" id="btn-confirm">选好了</a></div>
+  	</div>
+  </div>
+</div>

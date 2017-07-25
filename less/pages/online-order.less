@@ -1,0 +1,198 @@
+.page-online-order{
+	#title-page{
+		text-align: center;
+		background: #007aff;
+		color: #fff;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	#wrapper-head{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 2;
+	//	overflow: scroll;
+	}
+
+	#wrapper-day{
+		width: 100%;
+		background: #dddddd;
+	}
+
+	td{
+		text-align: center;
+		height: 100%
+	}
+
+	#wrap-meal-type{
+		width: 100%;
+		padding-top: 3px;
+		padding-bottom: 3px;
+		background: white;
+
+//		td{
+//			a{
+//				color: black;
+//			}
+//		}
+	}
+
+	#wrapper-day{
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+
+	.wrapper-main-content{
+		margin-bottom: 60px;
+	}
+
+	#wrapper-content-area{
+		width: 100%;
+		background: green;
+	}
+
+	#dish-type-block{
+		width: 100%;
+		td{
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+	}
+
+	hr{
+		height: 3px;
+		background: #dddddd;
+		margin: 0;
+	}
+
+	#wrapper-leftarea{
+		position: fixed;
+		top: 112px;
+		left: 0;
+		background: #dddddd;
+		width: 25%;
+		height: 100%;
+		overflow: hidden;
+		z-index: 2;
+	}
+
+	#wrapper-rightarea{
+		position: absolute;
+		top: 112px;
+		bottom: 60px;
+		left: 25%;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	//	float: left;
+		width: 75%;
+	//	height: 100%;
+	//	margin-top: 70px;
+	//	margin-left: 25%;
+		padding-top: 0;
+		.icon-minus{
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		.icon-plus{
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		.order-number{
+			padding-bottom: 50px;
+			line-height: 40px;
+		}
+	}
+
+	.btn-active{
+		border: 2px;
+	}
+
+	.day-highlight-line{
+		height: 2px;
+		border: none;
+		border-bottom: 2px solid #007aff;
+		margin-bottom: 0;
+	}
+
+	.meal-highlight-line{
+		height: 2px;
+		border: none;
+		border-bottom: 2px solid #007aff;
+		margin-bottom: 0;
+	}
+
+	.btn-active{
+		background: white;
+	}
+
+	.title-dish-type{
+		font-size: 20px;
+		margin-top: 10px;	
+	}
+
+	.btn-help{
+		margin-left: 20px;
+
+		.help-icon{
+			vertical-align: middle;
+		}
+	}
+
+	#footer{
+		position: fixed;
+		bottom: 0;
+		height: 60px;
+		width: 100%;
+		z-index: 3;
+		text-align: center;
+
+		.bucket-area{
+			float: left;
+			width: 70%;
+			height: 100%;
+			background: #fff;
+			text-align: center;
+
+			.wrapper-bucket-area{
+				margin-top: 0px;
+			//	margin-bottom: 5px;
+				margin-left: 20px;
+
+				tr{
+					margin-top: 0;
+
+					td{
+						margin-top: 0;
+						padding-top: 0;
+						padding-left: 20px;
+						padding-right: 20px;
+						text-align: center;
+					}
+				}
+			}
+
+
+			#txt-total-fee{
+				font-size: 15px;
+			}
+		}
+
+		.btn-confirm-order{
+			float: left;
+			width: 30%;
+			height: 100%;
+			line-height: 60px;
+			text-align: center;
+			background: #007aff;
+			vertical-align: middle;
+
+			a{
+				color: #fff;
+			}
+		}
+	}
+}

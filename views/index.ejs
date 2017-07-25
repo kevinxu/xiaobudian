@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="lib/framework7/dist/css/framework7.ios.min.css">
+  <% if (isProd) { %>
+  <link rel="stylesheet" href="<%= assetsCss %>">
+  <% } else { %>
+  <link rel="stylesheet" href="css/app.css">
+  <% } %>
+  <script>
+    // Promise polyfill
+    if (!window.Promise) {
+      var script = document.createElement('script');
+      var head = document.getElementsByTagName('head')[0];
+      script.setAttribute('src', 'js/polyfill/promise.min.js');
+      script.setAttribute('async', 'true');
+      head.appendChild(script);
+    }
+
+    window.version = <% if (isProd) { %>"<%= version %>"<% } else { %>'demo'<% } %>;
+    window.entry = "<%= entry %>";
+    window.openId = "<%= openId %>";
+    window.hospitalId = "<%= hospitalId %>";
+    window.departmentId = "<%= departmentId %>";
+    window.originPath = "<%= originPath %>";
+  </script>
+  <style type="text/css">
+    body{ font-size: 20px; }
+  </style>
+</head>
+<body>
+  <div class="statusbar-overlay"></div>
+  <div class="views">
+    <div class="view view-main" id="mainView">
+      <div class="navbar navbar-hidden"></div>
+      <div class="pages no-navbar">
+        <div class="page">
+          <div class="page-content">
+            <div class="fix-center">
+              <span class="preloader"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="lib/js-md5/build/md5.min.js"></script>
+  <script src="lib/framework7/dist/js/framework7.min.js"></script>
+  <script src="lib/echarts/echarts.min.js"></script>
+  <script src="lib/mqttHelper/mqttws31.js"></script>
+  <script src="lib/mqttHelper/mqttHelper.js"></script>
+  <script src="lib/datePicker/datePicker.js"></script>
+  <script src="lib/js-md5/build/md5.min.js"></script>
+  <% if (isProd) { %>
+  <script data-main="<%= assetsJs %>" src="lib/requirejs/require.js"></script>
+  <% } else { %>
+  <script data-main="js/main" src="lib/requirejs/require.js"></script>
+  <% } %>
+</body>
+</html>

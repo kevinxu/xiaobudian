@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+input,textarea,button,select{
+  font-size: .14rem;
+  border: none;
+  -webkit-appearance: none;
+  padding: 0;
+  border-radius: 0;
+  outline: none;
+  font-family: -apple-system,SF UI Text,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder{
+  color: @muted_color;
+}
+h1,h2,h3,h4,h5,h6,h7{
+  font-weight: normal;
+  margin: 0;
+}
+a{
+  color: @primary_color;
+}
+p{
+  margin: 0;
+}
+.clearfix:before {
+  display: table;
+  content: " ";
+}
+.clearfix:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+html {
+    font-size: 100px
+}
+
+@media only screen and (min-width: 320px) and (max-width:320px) {
+    html {
+        font-size:85.33px!important
+    }
+}
+
+@media only screen and (min-width: 384px) {
+    html {
+        font-size:106.67px!important
+    }
+}
+
+@media only screen and (min-width: 412px) {
+    html {
+        font-size:114.44px!important
+    }
+}
+
+@media only screen and (min-width: 414px) {
+    html {
+        font-size:110.4px!important
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    html {
+        font-size:204.8px!important
+  }
+}
+body{
+  font-size: .14rem;
+}
+
+/*custom*/
+.page{
+  background-color: #f7f7f7;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.txt-highlight{
+  color: @primary_color;
+}
+.txt-muted{
+  color: @muted_color;
+}
+/*mixins*/
+.pseudo-elements{
+  position: absolute;
+  content: '';
+  display: block;
+}
+.border-top(@width: 1px, @left: 0){
+  position: relative;
+  &:before{
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: @left;
+    width: 100%;
+    height: @width;
+    background-color: @default_line_color;
+    transform: scaleY(0.5);
+  }
+}
+.border-bottom(@width: 1px, @left: 0){
+  position: relative;
+  &:after{
+    display: block;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: @left;
+    width: 100%;
+    height: @width;
+    background-color: @default_line_color;
+    transform: scaleY(0.5);
+  }
+}
+.arrow-right{
+  position: absolute;
+  top: 50%;
+  width: .07rem;
+  height: .07rem;
+  margin-top: -.035rem;
+  right: .15rem;
+  border-bottom: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
+  transform: rotate(315deg);
+}
+.mt-10{
+  margin-top: .1rem;
+}
+.mt-20{
+  margin-top: .2rem;
+}
+.mt-40{
+  margin-top: .4rem;
+}
+.infinite-scroll-preloader{
+  margin: 0 !important;
+}

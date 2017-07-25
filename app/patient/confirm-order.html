@@ -1,0 +1,135 @@
+<div class="page page-confirm-order" data-page="confirm-order">
+  <div class="page-content">
+  	<div class="wrapper-main-content">
+	  	<div id="txt-prompt">首次点餐，需完善个人信息</div>
+	  	<div class="card">
+	  		<div class="card-content">
+			  	<form id="form-patient-detail" class="list-block">
+			  		<ul>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">患者姓名</div>
+			  						<div class="item-input">
+			  							<input id="ipt-patient-name" type="text" name="realName" placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">住院号</div>
+			  						<div class="item-input">
+			  							<input id="ipt-patient-inhospital-id" type="text" name="inHospitalId" placeholder="请输入">
+			  						</div>
+			  						<div class="item-after"><a id="btn-help-bed" href="#"><img id="icon-help-bed" src="img/help.png" width="20" height="20"></a></div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">手机号</div>
+			  						<div class="item-input">
+			  							<input id="ipt-patient-mobile" type="text" name="mobile" placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">床位号</div>
+			  						<div class="item-input">
+			  							<input id="ipt-patient-bedno" type="text" name="bedNo" placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">所在病区</div>
+			  						<div class="item-input">
+			  							<input type="text" name="departmentName" readonly placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">预约订单</div>
+			  						<div class="item-input">
+			  							<input id="ipt-booking-date" type="text" readonly placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">送餐时间</div>
+			  						<div class="item-input">
+			  							<input id="ipt-shipping-time" type="text" readonly placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">其他备注</div>
+			  						<div class="item-input">
+			  							<div class="buttons-row">
+			  								<a href="#" id="btn-remark-diabetes" class="button">糖尿病</a>
+			  								<a href="#" id="btn-remark-lowsalt" class="button">低盐</a>
+			  								<a href="#" id="btn-remark-lowfat" class="button">低脂</a>
+			  							</div>
+			  						</div>
+			  					</div>
+			  				</div>
+			  			</li>					
+			  		</ul>
+			  	</form>  			
+	  		</div>
+	  	</div>
+	  	<div class="content-block-title">您的订单</div>
+	  	<div class="card">
+	  		<div class="card-content">
+	  			<div class="list-block">
+	  				<ul>
+	  					<li>
+	  						<div class="item-content">
+	  							<div class="item-inner">
+	  								<div class="item-title label">
+	  									<div id="lbl-order-date">2017-7-20</div>
+	  									<div id="lbl-order-meal">早餐</div>
+	  								</div>
+	  								<div class="item-input">
+	  									<script type="text/template" id="orderDishesTpl">
+	  									{{#each this}}
+	  									<div>{{dishName}}x{{count}}</div>
+	  									{{/each}}
+	  									</script>
+	  								</div>
+	  							</div>
+	  						</div>
+	  					</li>
+	  				</ul>
+	  			</div>
+	  		</div>
+	  	</div>
+  	</div>
+  	<div id="footer">
+  		<div class="bucket-area">
+  			<div class="wrapper-content">
+	   			提交医院审核<br>
+	  			餐费<span class="highlight-color">￥</span><span id="my-total-fee" class="highlight-color">0</span>将在住院费中扣除 				
+  			</div>
+  		</div>
+  		<div class="btn-confirm-order"><a href="#" id="btn-confirm-my-order">确定</a></div>
+  	</div>
+  </div>
+</div>

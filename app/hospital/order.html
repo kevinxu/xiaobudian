@@ -1,0 +1,85 @@
+<div class="page page-order" data-page="order">
+  <div class="page-content">
+	  <div id="wrapper-fixed-head">
+	  	<div id="dept-wrapper-title">
+		      <select id="select-dept-list">
+		      <script type="text/template" id="deptInfoTpl">
+		        {{#each this}}
+		        <option id="opt-{{@index}}" class="opt-dept-name">{{name}}</option>
+		        {{/each}}
+		      </script>
+		      </select>
+	  	</div>
+	  	<table id="wrapper-day" cellspacing="0" cellpadding="0">
+			<tr>
+				<td id="wrapper-prev-day"><a href="#" id="id-pre-day" class="tab-link btn-date" data-date-sel="day-pre">前一天</a>
+				</td>
+				<td><a href="#" id="id-center-day" class="tab-link btn-date" data-date-sel="day-center"><script type="text/template" id="dateInfoTpl">{{dateCenter}}</script></a>
+				<hr class="day-highlight-line" />
+				</td>
+				<td id="wrapper-next-day"><a href="#" id="id-next-day" class="tab-link btn-date" data-date-sel="day-next">后一天</a></td>
+			</tr>
+		</table>
+		<table id="wrap-meal-type" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>
+					<a href="#" class="btn-meal" data-meal="breakfast">早餐</a>
+					<hr class="meal-highlight-line" />
+				</td>
+				<td><a href="#" class="btn-meal" data-meal="lunch">中餐</a></td>
+				<td><a href="#" class="btn-meal" data-meal="dinner">晚餐</a></td>
+			</tr>
+		</table>
+	  </div>
+	  <div id="wrapper-order-list">
+	  	<div class="main-content">
+		<script type="text/template" id="orderInfoTpl">
+		<table id="tb-order-list" width="100%">
+			<tr>
+				<th>床号<br>姓名<br>住院号</th>
+				<th>菜单</th>
+				<th>类型</th>
+				<th>金额</th>
+				<th>操作</th>
+			</tr>	
+			{{#each this}}
+			<tr>
+				<td>{{patientBedNo}}<br>{{patientName}}<br>{{inHospitalId}}</td>
+				<td>
+					{{#each dishes}}
+						{{dishName}}({{#js_compare 'this.dishType=="regular"'}}普食{{/js_compare}}
+									{{#js_compare 'this.dishType=="semi-fluid"'}}半流质{{/js_compare}}
+									{{#js_compare 'this.dishType=="fluid"'}}流质{{/js_compare}}
+									{{#js_compare 'this.dishType=="medical-food"'}}治疗饮食{{/js_compare}})x{{count}}<br>
+					{{/each}}
+				</td>
+				<td>
+					{{#each remarks}}
+						{{#js_compare 'this=="diabetes"'}}糖尿病{{/js_compare}}
+						{{#js_compare 'this=="lowsalt"'}}低盐{{/js_compare}}
+						{{#js_compare 'this=="lowfat"'}}低脂{{/js_compare}}<br>
+					{{/each}}
+				</td>
+				<td>￥{{totalFee}}</td>
+				<td>
+					<div id="{{_id}}">
+					{{#js_compare 'this.status==1'}}
+					<a href="#" id="confirm-{{_id}}" class="button confirm" data-id="{{_id}}">确定</a>
+					<a href="#" id="unsubscribe-{{_id}}" class="button unsubscribe" data-id="{{_id}}">退订</a>
+					{{/js_compare}}
+					{{#js_compare 'this.status==2'}}
+					<span>已确定</span>
+					{{/js_compare}}
+					{{#js_compare 'this.status==3'}}
+					<span>已退订</span>
+					{{/js_compare}}
+					</div>
+				</td>
+			</tr>
+			{{/each}}
+		</table>
+		</script>
+		</div>
+	  </div>
+  </div>
+</div>

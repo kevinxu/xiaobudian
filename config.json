@@ -1,0 +1,68 @@
+{
+  "port": "3005",
+  "logTopic": "is_test_action",
+  "dbIp": "192.168.0.104",
+  "dbPort": "27017",
+  "pcDebug": {
+    "debug": 1,
+    "debugManagerOpenId": "oTt421TWJGSGXPfGe01zMUR2aSUU",
+    "debugPatientOpenId": "oIj_Y09qM_-ysRFhlQMJuIMydt2I",
+    "debugHospitalId": "596c6af95c7b2829908c406d",
+    "debugDeptId": "596d37ea98267c176c83433c"
+  },
+  "wechatPatient": {
+  	"token": "xiaobudian" ,
+  	"appId": "wx3e81407b07989fa9",
+  	"appSecret": "4bd4a9138a7ced013cdc28c27c2568a8",
+    "templateId": "OIJfawGwj7RqWpqMPCi4FFXN08N4RCiPaucWRWoasn0"
+  },
+  "wechatHospital": {
+  	"token": "xiaobudian" ,
+  	"appId": "wxa8bb630b53a0aefd",
+  	"appSecret": "096ba29a7d84d7d6434a642a76063c0a"
+  },
+  "redis": {
+  	"host": "192.168.0.104",
+  	"port": "6379"
+  },
+  "wechatMenuHospital": [
+      {
+        "type": "view",
+        "name": "订单管理",
+        "key": "V1001_ORDER_MANAGEMENT",
+        "url": "http://xiaobudian.tunnel.phpor.me/hospitalOrder"
+      },
+      {
+        "type": "view",
+        "name": "膳食管理",
+        "key": "V1001_MENU_MANAGEMENT",
+        "url": "http://xiaobudian.tunnel.phpor.me/hospitalMenuSetting"
+      },
+      {
+        "type": "view",
+        "name": "医院设置",
+        "key": "V1001_HOSPITAL_SETTING",
+        "url": "http://xiaobudian.tunnel.phpor.me/hospitalSetting"
+      }
+    ],
+  "wechatMenuPatient": [
+      {
+        "type": "view",
+        "name": "在线下单",
+        "key": "V2001_ONLINE_BILL",
+        "url": "http://xiaobudian.tunnel.phpor.me/patientOnlineOrder"
+      },
+      {
+        "type": "view",
+        "name": "我的订单",
+        "key": "V2001_MY_ORDER",
+        "url": "http://xiaobudian.tunnel.phpor.me/patientMyOrder"
+      },
+      {
+        "type": "view",
+        "name": "点餐须知",
+        "key": "V2001_ORDER_INTRODUCTION",
+        "url": "http://xiaobudian.tunnel.phpor.me/patientReadme"
+      }
+    ]
+}

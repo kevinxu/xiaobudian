@@ -1,0 +1,65 @@
+{
+  "name": "xiaobudian",
+  "version": "1.0.0",
+  "main": "server.js",
+  "engines": {
+    "node": ">=6",
+    "npm": ">=3"
+  },
+  "repository": "https://github.com/kevinxu/xiaobudian.git",
+  "bugs": {
+    "url": "https://github.com/kevinxu/xiaobudian/issues"
+  },
+  "author": "kevin <feng927.xu@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "lint": "eslint app --fix",
+    "start": "pm2 start pm2.json"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "express-http-proxy": "^0.11.0",
+    "express-validation": "^1.0.2",
+    "express-winston": "^2.2.0",
+    "framework7": "^1.5.0",
+    "helmet": "^3.4.1",
+    "joi": "^10.6.0",
+    "mongoose": "^4.10.8",
+    "node-schedule": "^1.2.3",
+    "qiniu": "^6.1.13",
+    "qs": "^6.3.0",
+    "redis": "^2.7.1",
+    "request": "^2.79.0",
+    "throttleit": "^1.0.0",
+    "wechat": "^2.1.0",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "del": "^2.2.2",
+    "dev-ip": "^1.0.1",
+    "eslint": "^3.15.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-clean-css": "^3.0.2",
+    "gulp-header": "^1.8.8",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-less": "^3.2.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-requirejs-optimize": "^1.2.0",
+    "gulp-rev": "^7.1.2",
+    "gulp-rev-collector": "^1.1.1",
+    "gulp-rev-css-url": "^0.1.0",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-string-replace": "^0.4.0",
+    "gulp-strip-debug": "^1.1.0",
+    "main-bower-files": "^2.13.1",
+    "mongoose": "^4.10.8",
+    "run-sequence": "^1.2.2",
+    "vinyl-paths": "^2.1.0"
+  }
+}

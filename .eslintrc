@@ -1,0 +1,73 @@
+{
+  "parserOptions": {
+    "impliedStrict": true
+  },
+
+  "env": {
+    "browser": true,
+    "amd": true
+  },
+
+  "globals": {
+    "document": false,
+    "navigator": false,
+    "window": false,
+    "location": false,
+    "Promise": false,
+    "Framework7": false,
+    "Dom7": false,
+    "Template7": false,
+    "$$": false,
+    "f7": false,
+    "mainView": true,
+    "NIM": false,
+    "WeixinJSBridge": false
+  },
+
+  "rules": {
+    "comma-dangle": 2,
+    "no-cond-assign": 2,
+    "no-console": 1,
+    "no-debugger": 2,
+    "no-dupe-keys": 2,
+    "no-extra-semi": 2,
+    "no-func-assign": 1,
+    "no-obj-calls": 2,
+    "no-sparse-arrays": 2,
+    "no-unexpected-multiline": 2,
+    "no-unreachable": 2,
+    "curly": [2, "multi-line"],
+    "default-case": 2,
+    "eqeqeq": [2, "always"],
+    "no-alert": 2,
+    "no-eq-null": 2,
+    "no-eval": 2,
+    "no-loop-func": 2,
+    "no-multi-spaces": [2, { "exceptions": { "VariableDeclarator": true } }],
+    "no-multi-str": 2,
+    "no-sequences": 2,
+    "no-with": 2,
+    "no-delete-var": 2,
+    "no-undef": 2,
+    "no-unused-vars": [1, {"vars": "local"}],
+    "comma-style": [2, "last"],
+    "eol-last": 2,
+    "indent": [2, 2, { "SwitchCase": 1, "VariableDeclarator": 1, "MemberExpression": 1 }],
+    "key-spacing": [2, { "afterColon": true }],
+    "keyword-spacing": [2, { "before": true, "after": true }],
+    "linebreak-style": [2, "unix"],
+    "lines-around-comment": [2, { "beforeBlockComment": true }],
+    "max-depth": [1, 4],
+    "new-cap": [2, { "newIsCap": true, "capIsNew": false }],
+    "new-parens": 2,
+    "no-multiple-empty-lines": [2, { "max": 1}],
+    "quotes": [2, "single"],
+    "semi": [2, "always"],
+    "semi-spacing": [2, {"before": false, "after": true}],
+    "space-before-blocks": 2,
+    "space-before-function-paren": [2, {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
+    "space-infix-ops": 2,
+    "space-unary-ops": [2, {"words": true, "nonwords": false}],
+    "spaced-comment": [2, "always", { "exceptions": ["-"] }]
+  }
+}

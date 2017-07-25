@@ -1,0 +1,51 @@
+<div class="page page-my-order" data-page="my-order">
+  <div class="page-content">	
+  	<div id="top-title">我的订单</div>
+  	<div class="card">
+  		<div class="card-content">
+  			<script type="text/template" id="orderListTpl">
+			<table id="tb-order-list" width="100%">
+				<tr>
+					<th>日期<br>餐别</th>
+					<th>菜单</th>
+					<th>类型<br>备注</th>
+					<th>金额</th>
+					<th>状态</th>
+				</tr>
+				{{#each this}}			
+				<tr>			
+					<td>{{orderDate}}<br>
+						{{#js_compare 'this.orderMealType=="breakfast"'}}早餐{{/js_compare}}
+						{{#js_compare 'this.orderMealType=="lunch"'}}午餐{{/js_compare}}
+						{{#js_compare 'this.orderMealType=="dinner"'}}晚餐{{/js_compare}}
+					</td>
+					<td>
+						{{#each dishes}}
+							{{dishName}}({{#js_compare 'this.dishType=="regular"'}}普食{{/js_compare}}
+										{{#js_compare 'this.dishType=="semi-fluid"'}}半流质{{/js_compare}}
+										{{#js_compare 'this.dishType=="fluid"'}}流质{{/js_compare}}
+										{{#js_compare 'this.dishType=="medical-food"'}}治疗饮食{{/js_compare}})x{{count}}<br>
+						{{/each}}
+					</td>
+					<td>
+						{{#each remarks}}
+							{{#js_compare 'this=="diabetes"'}}糖尿病{{/js_compare}}
+							{{#js_compare 'this=="lowsalt"'}}低盐{{/js_compare}}
+							{{#js_compare 'this=="lowfat"'}}低脂{{/js_compare}}<br>
+						{{/each}}
+					</td>
+					<td>￥{{totalFee}}</td>
+					<td>
+						{{#js_compare 'this.status==1'}}待确认<br><a id="btn-{{this._id}}" href="#" class="button btn-edit-order" data-order-id={{this._id}}>撤销</a>{{/js_compare}}
+						{{#js_compare 'this.status==2'}}已确认{{/js_compare}}
+						{{#js_compare 'this.status==3'}}已退订<br><a id="btn-{{this._id}}" href="#" class="button btn-view-reason" data-order-id={{this._id}}>理由</a>{{/js_compare}}
+						{{#js_compare 'this.status==4'}}已撤销{{/js_compare}}
+					</td>					
+				</tr>
+				{{/each}}
+			</table>
+			</script>
+  		</div>
+  	</div>
+  </div>
+</div>

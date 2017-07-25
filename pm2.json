@@ -1,0 +1,13 @@
+{
+  "name": "xiaobudian",
+  "script": "server.js",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "exec_mode": "cluster",
+  "instances": 4,
+  "error_file": "./log/app-err.log",
+  "out_file": "./log/app-out.log",
+  "merge_logs": true,
+  "log_date_format": "YYYY-MM-DD HH:mm Z"
+}

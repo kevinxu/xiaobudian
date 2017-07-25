@@ -1,0 +1,334 @@
+.fix-center {
+  width: 96%;
+  text-align: center;
+  .center();
+  .preloader {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+.list-block {
+  margin: 15px 0;
+}
+
+.notifications {
+  margin: 0 !important;
+}
+
+.list-block input[type=time],
+.list-block input[type=number],
+.list-block input[type=search],
+.list-block input[type=text],
+.list-block input[type=password],
+.list-block input[type=email],
+.list-block input[type=tel],
+.list-block input[type=url],
+.list-block input[type=date],
+.list-block input[type=datetime-local],
+.list-block select,
+.list-block textarea {
+  font-size: 16px;
+  height: 50px;
+  color: #333;
+}
+
+.button.button-big {
+  font-size: 18px;
+}
+
+.dynamic-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  .iconfont {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+  }
+}
+
+.navbar-on-left {
+  .dynamic-center {
+    opacity: 0;
+  }
+}
+
+.navbar-on-center {
+  .dynamic-center {
+    opacity: 1;
+  }
+}
+
+.navbar-inner {
+  padding: 0 4px !important;
+}
+
+.selectall {
+  margin-right: 11px;
+}
+
+.pull-to-refresh-layer {
+  .preloader {
+    width: 20px;
+    height: 20px;
+    margin-top: -11px;
+    margin-left: -33px;
+  }
+  .pull-to-refresh-arrow {
+    margin-left: -33px;
+  }
+}
+
+.pull-down {
+  .pull-to-refresh-layer {
+    &:after {
+      .refresh("下拉刷新");
+    }
+  }
+}
+
+.pull-up {
+  .pull-to-refresh-layer {
+    &:after {
+      .refresh("释放更新");
+    }
+  }
+}
+
+.refreshing {
+  .pull-to-refresh-layer {
+    &:after {
+      .refresh("正在加载");
+    }
+  }
+}
+
+
+/*course list*/
+.course-list {
+  margin-bottom: 35px;
+  li.item {
+    margin-top: 10px;
+  }
+  .item-content {
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 15px;
+    .box-sizing();
+    background-color: #ffffff;
+    .item-media {
+      height: 180px;
+      position: relative;
+      .item-course-desc {
+        width: 100%;
+        padding: 0 6px;
+        height: 70px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, .5);
+        color: #fff;
+        .box-sizing();
+        .course-title {
+          margin-top: 5px;
+          line-height: 20px;
+          height: 20px;
+          white-space: nowrap;
+          position: relative;
+          text-overflow: ellipsis;
+        }
+        .course-info {
+          margin-top: 5px;
+          font-size: 12px;
+          em {
+            margin: 0 5px;
+          }
+        }
+        .course-price {
+          margin-top: 5px;
+          font-size: 12px;
+          color: #FEC500;
+          .icon-buy-diamond {
+            width: 20px;
+            height: 12px;
+            vertical-align: middle;
+            margin-top: -2px;
+            margin-right: 5px;
+            .at2x('../img/angel_diamond_small', 100%, 100%);
+          }
+        }
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .item-inner {
+      .grade {
+        margin-top: 12px;
+        .display-flex();
+        .flex-vertical-center();
+        .grade-star-list {
+          ol {
+            .display-flex();
+          }
+          .item-star {
+            width: 20px;
+            height: 18px;
+            margin-right: 5px;
+          }
+          .star-gray {
+            .at2x('../img/star_gray2', 100%, 100%);
+          }
+          .star-light {
+            .at2x('../img/star_light', 100%, 100%);
+          }
+        }
+        span {
+          margin:  2px 0 0 5px;
+          color: #5DA6E7;
+        }
+      }
+      .grade-text {
+        margin-top: 10px;
+        overflow: hidden;
+        color: #B7B7B7;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+      }
+      .grade-expert {
+        margin-top: 10px;
+        .display-flex();
+        flex-wrap: wrap;
+        span {
+          margin-right: 10px;
+          img {
+            width: 30px;
+            height: 30px;
+            -webkit-border-radius:50%;
+            -moz-border-radius:50%;
+            border-radius:50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+i.icon.icon-back {
+  width: 13px;
+  height: 22px;
+  .at2x('../img/arrow_back', 100%, 100%);
+}
+
+.infinite-scroll-preloader {
+  margin-top: -20px;
+  margin-bottom: 10px;
+  text-align: center;
+  .preloader {
+    width: 34px;
+    height: 34px;
+    position: static;
+    left: 0;
+    top: 0;
+    margin-left: 0;
+    margin-top: 0;
+  }
+}
+
+.hidden {
+  display: none;
+}
+.infinite-data {
+  margin-bottom: 35px;
+}
+.button-row {
+  padding: 0 10px;
+  margin-top: 15px;
+  .button {
+    &.btn-pay {
+      color: #ffffff;
+      background: #FFC662;
+    }
+  }
+}
+
+//card-block
+.card-block {
+  margin-top: 10px;
+  position: relative;
+  .item-content {
+    min-height: 44px;
+    padding: 0 15px;
+    .display-flex();
+    .space-between();
+    .flex-vertical-center();
+    background-color: #ffffff;
+  }
+  .item-media {
+    .display-flex();
+    .flex-vertical-center();
+    margin-right: 10px;
+    padding: 10px 0;
+  }
+  .item-avatar img{
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .item-inner {
+    width: 100%;
+    min-height: 44px;
+    .display-flex();
+    .flex();
+    .flex-vertical-center();
+    .space-between();
+    .item-title {
+      font-size: 16px;
+      line-height: 22px;
+      color: #333333;
+    }
+    .item-text {
+      font-size: 12px;
+      line-height: 18px;
+      color: #A5A5A5;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%2060%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'm60%2061.5-38.25%2038.25-9.75-9.75%2029.25-28.5-29.25-28.5%209.75-9.75z'%20fill%3D'%23c7c7cc'%2F%3E%3C%2Fsvg%3E");
+      background-size: 10px 20px;
+      background-repeat: no-repeat;
+      background-position: 100% center;
+      .display-flex();
+      .flex-vertical-center();
+      .item-link {
+        min-height: 44px;
+        .display-flex();
+        .flex-vertical-center();
+        padding-right: 15px;
+        font-size: 14px;
+        color: #A5A5A5;
+      }
+    }
+  }
+  &.media-card {
+    .item-inner {
+      display: block;
+      .item-text {
+        background: 0 0;
+      }
+    }
+  }
+  &:after {
+    .border-1px();
+  }
+  &:before {
+    .border-1px( #F0F0F0, scaleY(.5), 0, auto, auto, 0);
+  }
+}
+.color-black{
+  color:black;
+}
