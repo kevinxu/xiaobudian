@@ -10,6 +10,9 @@ const ManagersSchema = new mongoose.Schema({
   hospitalId: {
     type: String
   },
+  departmentId: {
+    type: String
+  },
   // 0 - normal manager; 1 - hospital creator
   superManager: {
     type: Number
@@ -54,6 +57,14 @@ const ManagersSchema = new mongoose.Schema({
   },
   // 二维码过期日期
   qrCodeExpireDate: {
+    type: String
+  },
+  // 二维码推荐医院ID
+  recommendHospitalId: {
+    type: String
+  },
+  // 二维码推荐用户openId
+  recommendOpenId: {
     type: String
   },
   createdTime: {

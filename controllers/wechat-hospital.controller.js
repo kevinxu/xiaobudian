@@ -41,12 +41,12 @@ function refreshToken() {
 }
 
 function getDeptQrCode(hospId, deptId) {
-  var sceneStr = hospId + "$" + deptId;
+  var sceneStr = "channel1-" + hospId + "$" + deptId;
   return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 0);
 }
 
 function getHospitalQrCode(hospId, managerOpenId) {
-  var sceneStr = hospId + "$" + managerOpenId;
+  var sceneStr = "channel2-" + hospId + "$" + managerOpenId;
   return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 1);
 }
 
@@ -107,6 +107,8 @@ function subscribe(message, req, res) {
     var disabled = 0;
     var hospitalId = "";
     var departmentId = "";
+    var recommendHospitalId = "";
+    var recommendOpenId = "";
     var strReply;
 
     console.log(JSON.stringify(result));
@@ -118,22 +120,44 @@ function subscribe(message, req, res) {
     if (message.EventKey) {
       var qrscene = message.EventKey;
       // skip qrscene_
-      hospitalId = qrscene.substring(8);
-      var arr = hospitalId.split("$");
-      hospitalId = arr[0];
-      departmentId = arr[1];
+      var tmpStr = qrscene.substring(8);
+      var channel = tmpStr.substr(0, 9);
+      // skip channel1-
+      tmpStr = tmpStr.substring(9);
 
-      console.log("openId: " + openId + " hospitalId: " + hospitalId + " departmentId: " + departmentId);
+      if (channel == "channel1-") {
+        var arr = tmpStr.split("$");
+        hospitalId = arr[0];
+        departmentId = arr[1];
 
-      Hospital.get({'_id': hospitalId})
-        .then(hosp => {
-          console.log("get hospital with id: " + hospitalId);
-          console.log(hosp);
-          var hospitalName = hosp.hospitalName;
-          strReply = "恭喜您成为" + hospitalName + "点餐管理员！" +
-                  "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-          res.reply(strReply);
-      });
+        console.log("openId: " + openId + " hospitalId: " + hospitalId + " departmentId: " + departmentId);
+
+        Hospital.get({'_id': hospitalId})
+          .then(hosp => {
+            console.log("get hospital with id: " + hospitalId);
+            console.log(hosp);
+            var hospitalName = hosp.hospitalName;
+            strReply = "恭喜您成为" + hospitalName + "点餐管理员！" +
+                    "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+            res.reply(strReply);
+        });
+      }
+      else if (channel == "channel2-") {
+        console.log("从分享渠道扫码进入");
+        var arr = tmpStr.split("$");
+        recommendHospitalId = arr[0];
+        recommendOpenId = arr[1];
+
+        console.log("recommend hospitalId: " + recommendHospitalId + " openId: " + recommendOpenId);
+        strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+        res.reply(strReply);
+        }
+      else {
+        console.log("从未知渠道扫码进入");
+        strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+        res.reply(strReply);
+      }
+
     }
     else {
       console.log("从公众号直接扫描进入");
@@ -145,35 +169,33 @@ function subscribe(message, req, res) {
       .then(mgr => {
         if (mgr) {
           console.log("The manager with openid " + openId + " exists.");
+          var data = {
+              superManager: superManager,
+              nickName: nickName,
+              subscribeStatus: subscribeStatus,
+              sex: sex,
+              city: city,
+              province: province,
+              country: country,
+              headImgUrl: headImgUrl,
+              remark: remark,
+              disabled: disabled
+          };
+
           if (hospitalId) {
-            var data;
-            data = {
-              hospitalId: hospitalId,
-              superManager: superManager,
-              nickName: nickName,
-              subscribeStatus: subscribeStatus,
-              sex: sex,
-              city: city,
-              province: province,
-              country: country,
-              headImgUrl: headImgUrl,
-              remark: remark,
-              disabled: disabled
-            };
+            data.hospitalId = hospitalId;
           }
-          else {
-            data = {
-              superManager: superManager,
-              nickName: nickName,
-              subscribeStatus: subscribeStatus,
-              sex: sex,
-              city: city,
-              province: province,
-              country: country,
-              headImgUrl: headImgUrl,
-              remark: remark,
-              disabled: disabled
-            };
+
+          if (departmentId) {
+            data.departmentId = departmentId;
+          }
+
+          if (recommendHospitalId) {
+            data.recommendHospitalId = recommendHospitalId;
+          }
+
+          if (recommendOpenId) {
+            data.recommendOpenId = recommendOpenId;
           }
 
           Managers.updateOne(openId, data)
@@ -183,6 +205,7 @@ function subscribe(message, req, res) {
           const manager = new Managers({
             openId,
             hospitalId,
+            departmentId,
             superManager,
             nickName,
             subscribeStatus,
@@ -192,6 +215,8 @@ function subscribe(message, req, res) {
             country,
             headImgUrl,
             remark,
+            recommendHospitalId,
+            recommendOpenId,
             disabled
           });
 
