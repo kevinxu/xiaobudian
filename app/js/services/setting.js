@@ -17,6 +17,14 @@ define(['services/base'], function (Service) {
       });
     },
 
+    getHospitalQrCode: function (data) {
+      return Service.getData({
+        method: 'get',
+        url: '/api/hospital/getQrcode?hospitalId=' + data.hospitalId + '&openId=' + data.openId,
+        data: ''
+      });
+    },
+
     updateHospitalName: function (id, data) {
       return Service.getData({
         method: 'put',

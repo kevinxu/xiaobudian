@@ -6,6 +6,20 @@
 
 	}
 
+	.small-qrcode{
+		width: 100px;
+		height: auto;
+	}
+
+	.item-title.label{
+
+		width: 25%;
+	}
+
+	.item-title-name{
+		font-size: 20px;
+	}
+
 	.btn-wrapper{
 //		display: block;
 //		width: 50px;
@@ -56,5 +70,30 @@
 	.ipt-remark{
 		width: 10px;
 		text-align: center;
+	}
+
+	.qrcode-overlay{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	//	display: none;
+		background: #000;
+	//	opacity: 0.5;
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+		text-align: center;
+
+		span{
+			height: 100%;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		img{
+			width: 100%;
+			height: auto;
+			vertical-align: middle;
+		}
 	}
 }

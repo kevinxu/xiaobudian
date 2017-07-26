@@ -3,6 +3,7 @@ const Hospital = require('../models/hospital.model');
 const Managers = require('../models/hospital-managers.model');
 const wechatHospital = require('./wechat-hospital.controller');
 const wechatPatient = require('./wechat-patient.controller');
+const Util = require('./utils');
 
 // 环境变量
 const env = process.env.NODE_ENV || 'development';
@@ -111,6 +112,70 @@ function getManagers(req, res, next) {
         });
     })
     .catch(e => next(e));  
+}
+
+function getHospitalQrCode(req, res, next) {
+  const { hospitalId, openId } = req.query;
+
+  console.log("getHospitalQrCode hospitalId: " + hospitalId + " openId: " + openId);
+  Managers.get({
+    'hospitalId': hospitalId,
+    'openId': openId
+  }).then(mgr => {
+    if (mgr) {
+        console.log(mgr);
+        var data = {
+          'hospitalId': hospitalId,
+          'openId': openId
+        };
+
+        var refreshQrCode = 0;
+        if (!mgr.hospitalQrCode) {
+          refreshQrCode = 1;
+        }
+        if (mgr.qrCodeExpireDate) {
+          var qrCodeExpireDate = new Date(mgr.qrCodeExpireDate);
+          var today = new Date();
+
+          if (today >= qrCodeExpireDate) {
+            refreshQrCode = 1;
+          }
+        }
+        if (refreshQrCode) {
+          wechatHospital.getHospitalQrCode(hospitalId, openId)
+            .then(result => {
+              if (result) {
+                data.hospitalQrCode = result.urlQrCode;
+
+                res.json({
+                  success: true,
+                  data: data
+                });
+
+                Managers.updateOne(openId, {
+                  'hospitalQrCode': result.urlQrCode,
+                  'qrCodeExpireDate': result.expireDate
+                });
+              }
+            });
+        }
+        else {
+          data.hospitalQrCode = mgr.hospitalQrCode;
+          res.json({
+            success: true,
+            data: data
+          }); 
+        }     
+    }
+    else {
+      res.json({
+        success: false,
+        errMsg: "此管理员不存在！"
+      })
+    }
+
+    })
+    .catch(e => next(e)); 
 }
 
 function update(req, res, next) {
@@ -431,5 +496,5 @@ function getDept(req, res, next) {
 }
 
 module.exports = {
-  create, getDeptList, getManagers, findOne, update, addDepartment, editDepartment, unbindManager, remarkManagerName, updateOrderTime, isManagerExist, getDept,
+  create, getDeptList, getManagers, findOne, update, addDepartment, editDepartment, unbindManager, remarkManagerName, updateOrderTime, isManagerExist, getDept, getHospitalQrCode,
 };

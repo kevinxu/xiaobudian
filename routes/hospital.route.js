@@ -103,6 +103,10 @@ router.route('/deptList')
 router.route('/managers')
   .get(hospitalController.getManagers);
 
+// {METHOD} /api/hospital/getQrcode
+router.route('/getQrcode')
+  .get(hospitalController.getHospitalQrCode);
+
 // {METHOD} /api/hospital/:hospitalId
 router.route('/:hospitalId')
   .put(validate(paramSchema.updateHospital), hospitalController.update);

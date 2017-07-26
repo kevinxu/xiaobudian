@@ -96,10 +96,95 @@ define([
         element: '#btn-edit-dinner-confirm',
         event: 'click',
         handler: onEditDinnerConfirm
+      }, {
+        element: '#btn-dept-qrcode',
+        event: 'click',
+        handler: onClickDeptQrcode
+      }, {
+        element: '#btn-hosp-qrcode',
+        event: 'click',
+        handler: onClideHospQrcode
+      }, {
+        element: '#btn-xiaobudian-qrcode',
+        event: 'click',
+        handler: onClideXiaobudianQrcode
       }];
     }
 
   };
+
+  function onClickDeptQrcode() {
+    var urlQrcode = $$('#img-dept-qrcode').data('url-qrcode');
+    console.log("onClickDeptQrcode, url: " + urlQrcode);
+
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');
+    $$('#qrcode-overlay').html('<span></span><img id="img-dept-qrcode-big" src="' + urlQrcode + '">');
+    $$('#img-dept-qrcode-big').css('vertical-align', 'middle');
+    Utils.bindEvents([{
+      element: '#img-dept-qrcode-big',
+      event: 'click',
+      handler: onClickDeptQrcodeBig
+    }]);
+  }
+
+  function onClideHospQrcode() {
+    var urlQrcode = $$('#img-hosp-qrcode').data('url-qrcode');
+    console.log("onClideHospQrcode, url: " + urlQrcode);
+
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');
+    $$('#qrcode-overlay').html('<span></span><img id="img-hosp-qrcode-big" src="' + urlQrcode + '">');
+    Utils.bindEvents([{
+      element: '#img-hosp-qrcode-big',
+      event: 'click',
+      handler: onClickHospQrcodeBig
+    }]);   
+  }
+
+  function onClideXiaobudianQrcode() {
+    var urlQrcode = $$('#img-xiaobudian-qrcode').data('url-qrcode');
+    console.log("onClideXiaobudianQrcode, url: " + urlQrcode);
+
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');
+    $$('#qrcode-overlay').html('<span></span><img id="img-xiaobudian-qrcode-big" src="' + urlQrcode + '">');
+    Utils.bindEvents([{
+      element: '#img-xiaobudian-qrcode-big',
+      event: 'click',
+      handler: onClickXiaobudianQrcodeBig
+    }]);     
+  }
+
+  function onClickDeptQrcodeBig() {
+    console.log("onClickDeptQrcodeBig");
+    Utils.unbindEvents([{
+      element: '#img-dept-qrcode-big',
+      event: 'click',
+      handler: onClickDeptQrcodeBig
+    }]);
+    $$('#qrcode-overlay').html('');
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');
+  }
+
+  function onClickHospQrcodeBig() {
+    console.log("onClickHospQrcodeBig");
+    Utils.unbindEvents([{
+      element: '#img-hosp-qrcode-big',
+      event: 'click',
+      handler: onClickHospQrcodeBig
+    }]);
+    $$('#qrcode-overlay').html('');
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');    
+  }
+
+  function onClickXiaobudianQrcodeBig() {
+    console.log("onClickXiaobudianQrcodeBig");
+    Utils.unbindEvents([{
+      element: '#img-xiaobudian-qrcode-big',
+      event: 'click',
+      handler: onClickXiaobudianQrcodeBig
+    }]);
+    $$('#qrcode-overlay').html('');
+    $$('#qrcode-overlay').toggleClass('qrcode-overlay');      
+  }
 
   function onEditBreakfast() {
     //console.log('onEditBreakfast is clicked.');
@@ -175,18 +260,20 @@ define([
   }
 
   function onEditConfirm(mealType, pickerReminder, pickerShipping, orderT) {
-    if (pickerReminder.cols[0] == undefined) {
+    console.log(pickerReminder.value);
+    console.log(pickerShipping.value);
+    if (pickerReminder.value.length == 0) {
       f7.alert("订餐提醒时间没有设置");
       return;
     }
-    if (pickerShipping.cols[0] == undefined) {
+    if (pickerShipping.value.length == 0) {
       f7.alert("订餐配送时间没有设置");
       return;
     }
-    var reminderDay = pickerReminder.cols[0].value;
-    var reminderTime = pickerReminder.cols[1].value + ":" + pickerReminder.cols[3].value;
-    var shippingStart = pickerShipping.cols[0].value + ":" + pickerShipping.cols[2].value;
-    var shippingEnd = pickerShipping.cols[4].value + ":" + pickerShipping.cols[6].value;
+    var reminderDay = pickerReminder.value[0];
+    var reminderTime = pickerReminder.value[1] + ":" + pickerReminder.value[2];
+    var shippingStart = pickerShipping.value[0] + ":" + pickerShipping.value[1];
+    var shippingEnd = pickerShipping.value[2] + ":" + pickerShipping.value[3];
 
     console.log("selected day: " + reminderDay + " time: " + reminderTime);
     console.log("shipping start: " + shippingStart + " end: " + shippingEnd);
@@ -484,9 +571,22 @@ define([
       'hospitalId': hospitalId
     }).then(function(res){
       if (res.success) {
-        showManagerList(res.data);        
+        showManagerList(res.data);     
       }
     });
+
+    Service.getHospitalQrCode({
+      'hospitalId': hospitalId,
+      'openId': openId
+    }).then(function(res){
+      if (res.success) {
+        renderHospitalQrCode(res.data);
+      }
+    });
+  }
+
+  function renderHospitalQrCode(data) {
+    Template.render('#hospQrCodeTpl', data);
   }
 
   function showOrderTimeInfo() {

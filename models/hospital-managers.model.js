@@ -48,6 +48,14 @@ const ManagersSchema = new mongoose.Schema({
   remarkName: {
     type: String
   },
+  // 医院二维码 含hospitalId和openId
+  hospitalQrCode: {
+    type: String
+  },
+  // 二维码过期日期
+  qrCodeExpireDate: {
+    type: String
+  },
   createdTime: {
     type: Date,
     default: Date.now
@@ -64,15 +72,7 @@ ManagersSchema.statics = {
    */
   get(data) {
     return this.findOne(data)
-      .exec()
-      .then(manager => {
-        if (manager) {
-          return manager;
-        }
-
-        const err = new Error('No such manager exists!');
-        return Promise.reject(err);
-      });
+      .exec();
   },
 
   // This function name cannot be named as update() which is the same name as that in library.

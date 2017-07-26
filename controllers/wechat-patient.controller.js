@@ -5,6 +5,7 @@ const wechat = require('wechat');
 const Hospital = require('../models/hospital.model');
 const Patient = require('../models/patients.model');
 const WechatCommon = require('./wechat.common');
+const Utils = require('./utils');
 
 // 环境变量
 const env = process.env.NODE_ENV || 'development';
@@ -42,8 +43,8 @@ function refreshToken() {
 }
 
 function getDeptQrCode(hospId, deptId) {
-
-  return WechatCommon.getQrCode(wechatAccessToken, hospId, deptId);
+  var sceneStr = hospId + "$" + deptId;
+  return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 0);
 }
 
 function all(req, res, next) {
@@ -270,28 +271,6 @@ function getUserInfo(openId) {
 function getAccessUserOpenId(code) {
   return WechatCommon.getAccessUserOpenId(config.wechatPatient.appId, config.wechatPatient.appSecret, code);
 }
-
-Date.prototype.format = function (format) {
-  var date = {
-    'M+': this.getMonth() + 1,
-    'd+': this.getDate(),
-    'h+': this.getHours(),
-    'm+': this.getMinutes(),
-    's+': this.getSeconds(),
-    'q+': Math.floor((this.getMonth() + 3) / 3),
-    'S+': this.getMilliseconds()
-  };
-  if (/(y+)/i.test(format)) {
-    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-  }
-  for (var k in date) {
-    if (new RegExp('(' + k + ')').test(format)) {
-      format = format.replace(RegExp.$1, RegExp.$1.length == 1
-      ? date[k] : ('00' + date[k]).substr(('' + date[k]).length));
-    }
-  }
-  return format;
-};
 
 function sendMessage(openId, msg) {
   var time = new Date();

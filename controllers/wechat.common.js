@@ -4,6 +4,7 @@ const redis = require('redis');
 const wechat = require('wechat');
 const WechatAPI = require('wechat-api');
 const Patient = require('../models/patients.model');
+const Utils = require('./utils');
 
 // 环境变量
 const env = process.env.NODE_ENV || 'development';
@@ -93,18 +94,33 @@ function auth(req, res, next) {
   }
 }
 
-function getQrCode(accessToken, hospId, deptId) {
+function getQrCode(accessToken, sceneStr, isTempQrCode) {
 
   var url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + accessToken;
-  var sceneStr = hospId + "$" + deptId;
-  var reqbody = {
-    "action_name": "QR_LIMIT_STR_SCENE",
-    "action_info": {
-      "scene": {
-        "scene_str": sceneStr
+  var reqbody;
+
+  if (isTempQrCode) {
+    reqbody = {
+      "expire_seconds": 1728000, // 20 days
+      "action_name": "QR_STR_SCENE",
+      "action_info": {
+        "scene": {
+          "scene_str": sceneStr
+        }
       }
-    }
-  };
+    };
+  }
+  else {
+    reqbody = {
+      "action_name": "QR_LIMIT_STR_SCENE",
+      "action_info": {
+        "scene": {
+          "scene_str": sceneStr
+        }
+      }
+    };
+  }
+
   var options = {
     method: 'POST',
     url: url,
@@ -121,6 +137,11 @@ function getQrCode(accessToken, hospId, deptId) {
           var ret = {
             urlQrCode: "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + result.ticket
           };
+          if (result.expire_seconds) {
+            var now = new Date();
+            now.setDate(now.getDate() + (result.expire_seconds / (3600 * 24)));
+            ret.expireDate = now.format("yyyy-MM-dd");
+          }
           resolve(ret);
       }
       else {

@@ -41,8 +41,13 @@ function refreshToken() {
 }
 
 function getDeptQrCode(hospId, deptId) {
+  var sceneStr = hospId + "$" + deptId;
+  return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 0);
+}
 
-  return WechatCommon.getQrCode(wechatAccessToken, hospId, deptId);
+function getHospitalQrCode(hospId, managerOpenId) {
+  var sceneStr = hospId + "$" + managerOpenId;
+  return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 1);
 }
 
 function all(req, res, next) {
@@ -245,5 +250,5 @@ function init() {
 }
 
 module.exports = {
-  init, getDeptQrCode, all, getAccessUserOpenId,
+  init, getDeptQrCode, all, getAccessUserOpenId, getHospitalQrCode,
 };
