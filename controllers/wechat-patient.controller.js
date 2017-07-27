@@ -111,6 +111,9 @@ function subscribe(message, req, res) {
       return;
     }
 
+    // 患者关注有两个渠道：
+    // 1. 通过医院病区二维码扫码关注；
+    // 2. 搜索公众号直接关注；
     if (message.EventKey) {
       var qrscene = message.EventKey;
       // skip qrscene_
@@ -147,37 +150,24 @@ function subscribe(message, req, res) {
 
     Patient.findOne({'openId': openId})
       .then(p => {
+        var data = {
+              nickName: nickName,
+              subscribeStatus: subscribeStatus,
+              sex: sex,
+              city: city,
+              province: province,
+              country: country,
+              headImgUrl: headImgUrl,
+              remark: remark,
+              disabled: disabled
+          };
+
         if (p) {
           console.log("The patient with openid " + openId + " exists.");
           if (hospitalId && departmentId) {
-            var data;
-            data = {
-              hospitalId: hospitalId,
-              departmentId: departmentId,
-              departmentName: departmentName,
-              nickName: nickName,
-              subscribeStatus: subscribeStatus,
-              sex: sex,
-              city: city,
-              province: province,
-              country: country,
-              headImgUrl: headImgUrl,
-              remark: remark,
-              disabled: disabled
-            };
-          }
-          else {
-            data = {
-              nickName: nickName,
-              subscribeStatus: subscribeStatus,
-              sex: sex,
-              city: city,
-              province: province,
-              country: country,
-              headImgUrl: headImgUrl,
-              remark: remark,
-              disabled: disabled
-            };
+            data.hospitalId = hospitalId;
+            data.departmentId = departmentId;
+            data.departmentName = departmentName;
           }
 
           Patient.updateOne(openId, data);
@@ -188,6 +178,7 @@ function subscribe(message, req, res) {
             openId,
             hospitalId,
             departmentId,
+            departmentName,
             nickName,
             subscribeStatus,
             sex,

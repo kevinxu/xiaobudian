@@ -24,8 +24,7 @@ function create(req, res, next) {
   });
   console.log("create hospital here.");
 
-  Hospital.findOne({'hospitalName': hospitalName})
-    .exec()
+  Hospital.get({'hospitalName': hospitalName})
     .then(createdOne => {
         if (createdOne) {
           console.log("The hospital: " + hospitalName + " exists.");
@@ -40,6 +39,11 @@ function create(req, res, next) {
           .then(newHospital => {
               var hospitalId = newHospital._id;
 
+              // 管理员进来的入口有：
+              // 1. 通过医院科室的邀请二维码，直接扫描关注公众号后成为相应医院的管理员；
+              // 2. 通过搜索公众号关注，如果此微信号是一个新的关注者，会走医院流程；
+              // 3. 通过邀请渠道二维码，如果此微信号是一个新的关注者，会走医院流程；
+              // 管理员都是在用户扫码关注的时候创建的，这里只要更新对应信息即可；
               Managers.updateOne(openId, {
                 superManager: 1,
                 hospitalId: hospitalId
@@ -61,12 +65,19 @@ function findOne(req, res, next) {
   console.log("hospitalId: " + hospitalId);
   Hospital.get({'_id': hospitalId})
     .then(hosp => {
-        console.log(hosp);
-        res.json({
-          success: true,
-          page: { current: 1, total: hosp.length },
-          data: hosp
-        });
+        if (hosp) {
+          console.log(hosp);
+          res.json({
+            success: true,
+            data: hosp
+          });          
+        }
+        else {
+          res.json({
+            success: false,
+            errMsg: "此医院不存在！"
+          });
+        }
     })
     .catch(e => next(e));
 }
@@ -104,12 +115,20 @@ function getManagers(req, res, next) {
   Managers.list({
     'hospitalId': hospitalId
   }).then(mgrs => {
+      if (mgrs) {
         console.log(mgrs);
         res.json({
           success: true,
           page: { current: 1, total: mgrs.length },
           data: mgrs
+        });       
+      }
+      else {
+        res.json({
+          success: false,
+          errMsg: "此医院不存在！"
         });
+      }
     })
     .catch(e => next(e));  
 }
@@ -182,17 +201,28 @@ function update(req, res, next) {
   var hospitalId = req.params.hospitalId;
   var data = req.body;
 
-  console.log("hospitalId: " + hospitalId);
-
-  Hospital.updateOne(hospitalId, data)
-    .then(newHospital => {
+  console.log("hospitalId: " + hospitalId + " new name: " + data.hospitalName);
+  Hospital.get({'hospitalName': data.hospitalName})
+    .then(result => {
+      if (result) {
+        console.log("The hospital name exists.");
         res.json({
-          success: true,
-          page: { current: 1, total: newHospital.length },
-          data: newHospital
-        });
-    })
-    .catch(e => next(e));
+          success: false,
+          errMsg: "指定的医院名称已存在！"
+        })
+
+        return;
+      }
+
+      Hospital.updateOne(hospitalId, data)
+        .then(newHospital => {
+            res.json({
+              success: true,
+              data: newHospital
+            });
+        })
+        .catch(e => next(e));      
+    });
 }
 
 function addDepartment(req, res, next) {
@@ -284,10 +314,12 @@ function addDepartment(req, res, next) {
 
 function editDepartment(req, res, next) {
   var hospitalId = req.params.hospitalId;
+  var deptId = req.body.deptId;
   var oldDeptName = req.body.oldDeptName;
   var newDeptName = req.body.newDeptName;
 
   console.log("hospitalId: " + hospitalId);
+  console.log("deptId: " + deptId);
   console.log("old dept name: " + oldDeptName);
   console.log("new dept name: " + newDeptName);
 
@@ -300,8 +332,19 @@ function editDepartment(req, res, next) {
 
         for (i = 0, len = deptList.length; i < len; i++) {
           console.log("dept name: " + deptList[i].name);
-          if (oldDeptName == deptList[i].name) {
+          if (newDeptName == deptList[i].name) {
+            console.log("The new department name exists.");
+            res.json({
+              success: false,
+              errMsg: "指定的病区名称已存在！"
+            });
+            return;
+          }
+        }
 
+        for (i = 0, len = deptList.length; i < len; i++) {
+          console.log("dept id: " + deptList[i]._id);
+          if (deptId == deptList[i]._id) {
             deptList[i].name = newDeptName;
             break;
           }
@@ -324,7 +367,7 @@ function editDepartment(req, res, next) {
         else {
           res.json({
             success: false,
-            errMsg: "原始的科室病区名不存在！"
+            errMsg: "科室病区ID不存在！"
         });
         }
       

@@ -20,7 +20,8 @@ define([
     // 患者端
     PATIENT_ORDER: 'patient/online-order.html',
     PATIENT_MY_ORDER: 'patient/my-order.html',
-    PATIENT_READ_ME: 'patient/read-me.html'
+    PATIENT_READ_ME: 'patient/read-me.html',
+    PATIENT_NO_SETTING: 'patient/no-setting.html'
   };
 
   var Router = {

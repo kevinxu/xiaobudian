@@ -32,7 +32,7 @@
                         <select id="select-dept-list">
                           <script type="text/template", id="deptInfoTpl">
                           {{#each this}}
-                          <option id="opt-{{@index}}">{{name}}</option>
+                          <option id="opt-{{@index}}" data-dept-id="{{_id}}">{{name}}</option>
                           {{/each}}
                           </script>
                         </select>

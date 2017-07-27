@@ -5,10 +5,10 @@
   "dbPort": "27017",
   "pcDebug": {
     "debug": 1,
-    "debugManagerOpenId": "oTt421TWJGSGXPfGe01zMUR2aSUU",
-    "debugPatientOpenId": "oIj_Y09qM_-ysRFhlQMJuIMydt2I",
-    "debugHospitalId": "596c6af95c7b2829908c406d",
-    "debugDeptId": "596d37ea98267c176c83433c"
+    "debugManagerOpenId": "oTt421T8p_6QfzTV0n5VJ1cWwQ1Y",
+    "debugPatientOpenId": "oIj_Y024I_w7uJnkuGo7kGcwJ4LM",
+    "debugHospitalId": "5979b0a81a68db1ef87209a7",
+    "debugDeptId": "5979b0ed1a68db1ef87209aa"
   },
   "wechatPatient": {
   	"token": "xiaobudian" ,

@@ -9,6 +9,7 @@ define([
   var hospitalName = "";
   var deptList = [];
   var selectedDept = "";
+  var selectedDeptIndex = 0;
   // 0 - show dept mode; 1 - add dept mode; 2 - edit dept mode
   var currentDeptMode = 0;
   var pickerBreakfastReminder;
@@ -217,10 +218,18 @@ define([
     if (initReminder) {
       pickerBreakfastReminder.setValue(initReminder, 100);
     }
+    else {
+      console.log("onEditBreakfastCancel, no init reminder.");
+      $$('#picker-breakfast-reminder').val('');
+    }
     var initShipping = setInitValueForShipping(0);
     if (initShipping) {
       pickerBreakfastShipping.setValue(initShipping, 100); 
-    } 
+    }
+    else {
+      console.log("onEditBreakfastCancel, no init shipping.");
+      $$('#picker-breakfast-shipping').val('');
+    }
   }
 
   function onEditLunchCancel() {
@@ -229,9 +238,15 @@ define([
     if (initReminder) {
       pickerLunchReminder.setValue(initReminder, 100);
     }
+    else {
+      $$('#picker-lunch-reminder').val('');
+    }
     var initShipping = setInitValueForShipping(1);
     if (initShipping) {
       pickerLunchShipping.setValue(initShipping, 100);
+    }
+    else {
+      $$('#picker-lunch-shipping').val('');
     }
   }
 
@@ -241,9 +256,15 @@ define([
     if (initReminder) {
       pickerDinnerReminder.setValue(initReminder, 100);
     }
+    else {
+      $$('#picker-dinner-reminder').val('');
+    }
     var initShipping = setInitValueForShipping(2);
     if (initShipping) {
       pickerDinnerShipping.setValue(initShipping, 100); 
+    }
+    else {
+      $$('#picker-dinner-shipping').val('');
     }
   }
 
@@ -262,11 +283,11 @@ define([
   function onEditConfirm(mealType, pickerReminder, pickerShipping, orderT) {
     console.log(pickerReminder.value);
     console.log(pickerShipping.value);
-    if (pickerReminder.value.length == 0) {
+    if (!pickerReminder.value || pickerReminder.value.length == 0) {
       f7.alert("订餐提醒时间没有设置");
       return;
     }
-    if (pickerShipping.value.length == 0) {
+    if (!pickerShipping.value || pickerShipping.value.length == 0) {
       f7.alert("订餐配送时间没有设置");
       return;
     }
@@ -700,6 +721,7 @@ define([
 
       $$('#opt-' + idx).attr("selected", "selected");
       selectedDept = deptList[idx].name;
+      selectedDeptIndex = idx;
       enterShowDeptMode();
     }
     else {
@@ -710,6 +732,8 @@ define([
   function enterNoDeptMode() {
       $$('#select-dept-list').hide();
       $$('#btn-dept-edit').hide();
+      $$('#ipt-dept-name').val("您还没有设置科室病区");
+      $$('#ipt-dept-name').attr("disabled", true);
       $$('#ipt-dept-name').show();
       $$('#btn-dept-cancel').hide();
       $$('#btn-dept-confirm').hide(); 
@@ -724,6 +748,7 @@ define([
     var len;
     for (i = 0, len = deptList.length; i < len; i++) {
       if (selectedDept == deptList[i].name) {
+        selectedDeptIndex = i;
         Template.render('#deptQrCodeTpl', deptList[i]);
         Template.render('#deptQrCodeHospTpl', deptList[i]);
         break;
@@ -746,18 +771,18 @@ define([
 
     console.log("new hospital name: " + newName);
     if (newName != hospitalName) {
-        hospitalName = newName;
         Service.updateHospitalName(hospitalId, {
           'openId': openId,
           'hospitalName': newName
         }).then(function(res){
           if (res.success) {
             console.log("The hospital name was updated successfully.");
+            hospitalName = newName;
           }
+
+          showHospitalName();
         });
     }
-
-    showHospitalName();
   }
 
   function enterEditDeptMode() {
@@ -783,6 +808,7 @@ define([
     if (newDeptName != selectedDept) {
        console.log("New department name: " + newDeptName);
        Service.editDepartment(hospitalId, {
+          'deptId': deptList[selectedDeptIndex]._id,
           'oldDeptName': selectedDept,
           'newDeptName': newDeptName
         }).then(function(res){
@@ -833,9 +859,10 @@ define([
         else {
           console.log("add dept failed. " + res.errMsg);
         }
+
+        enterShowDeptMode();
     });
 
-    enterShowDeptMode();
   }
 
   return Module;
