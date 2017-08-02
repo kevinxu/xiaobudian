@@ -4,7 +4,7 @@ define(['services/base'], function (Service) {
     getHospitalInfo: function (data) {
       return Service.getData({
         method: 'get',
-        url: '/api/hospital?hospitalId=' + data.hospitalId,
+        url: '/api/hospital?hospitalId=' + data.hospitalId + '&openId=' + data.openId,
         data: ''
       });
     },

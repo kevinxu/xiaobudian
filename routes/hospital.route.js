@@ -93,7 +93,7 @@ const paramSchema = {
 
 // {METHOD} /api/hospital
 router.route('/')
-  .get(hospitalController.findOne);
+  .get(hospitalController.getHospitalDetails);
 
 // {METHOD} /api/hospital/deptList/:openId
 router.route('/deptList')

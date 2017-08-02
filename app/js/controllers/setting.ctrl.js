@@ -5,6 +5,7 @@ define([
 ], function (Utils, Service, Template) {
 
   var openId = window.openId || Utils.getCache('USER_INFO').openId;
+  var isSuperManager = 0;
   var hospitalId = window.hospitalId;
   var hospitalName = "";
   var deptList = [];
@@ -574,7 +575,8 @@ define([
   function getHospitalInfo(hospitalId) {
 
     Service.getHospitalInfo({
-      'hospitalId': hospitalId
+      'hospitalId': hospitalId,
+      'openId': openId
     }).then(function(res){
       if (res.success) {
         console.log(res.page);
@@ -582,17 +584,12 @@ define([
         hospitalName = res.data.hospitalName;
         deptList = res.data.departments;
         orderTime = res.data.orderTime;
+        isSuperManager = res.data.isSuperManager;
+        console.log("Is supper manager: " + isSuperManager);
         showHospitalName();
         showDeptList(res.data.departments);
         showOrderTimeInfo();
-      }
-    });
-
-    Service.getHospitalManagers({
-      'hospitalId': hospitalId
-    }).then(function(res){
-      if (res.success) {
-        showManagerList(res.data);     
+        showManagerList(res.data.managers, isSuperManager);
       }
     });
 
@@ -622,8 +619,20 @@ define([
       showOrderNormalMode(2);
   }
 
-  function showManagerList(managerList) {
-    Template.render('#managerListTpl', managerList);
+  function showManagerList(managerList, isSuperManager) {
+    var data = {
+      'isSuperManager': isSuperManager,
+      'managers': managerList
+    };
+    Template.render('#managerListTpl', data);
+    if (!isSuperManager) {
+      $$('.btn-remark-cancel').hide();
+      $$('.btn-remark-confirm').hide();
+      $$('.btn-unbind').hide();
+      $$('.btn-remark').hide();
+      return;   
+    }
+    
     Utils.bindEvents([
         {
           element: '.btn-unbind',
@@ -696,7 +705,7 @@ define([
           if (res.success) {
             getHospitalInfo(hospitalId);
           }
-    });  
+        });  
     });
   }
 

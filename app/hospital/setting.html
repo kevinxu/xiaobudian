@@ -98,15 +98,13 @@
                   <th>真实姓名</th>
                   <th>操作</th>
                 </tr>
-                {{#each this}}
+                {{#each managers}}
                 <tr>
                   <td>{{nickName}}</td>
                   <td><input id="ipt-remark-{{openId}}" class="ipt-remark" type="text" value="{{remarkName}}" disabled autofocus="autofocus"></td>
                   <td>
                     <div class="buttons-row btns-op">
-                      {{#js_compare 'this.superManager=="0"'}}
                       <a href="#" id="unbind-{{openId}}" class="button btn-unbind" data-id="{{openId}}" data-nick-name="{{nickName}}">解绑</a>
-                      {{/js_compare}}
                       <a href="#" id="remark-{{openId}}" class="button btn-remark" data-id="{{openId}}" data-nick-name="{{nickName}}">备注</a>
                       <a href="#" id="remark-cancel-{{openId}}" class="button btn-remark-cancel" data-id="{{openId}}" data-remark-name="{{remarkName}}" data-nick-name="{{nickName}}">取消</a>
                       <a href="#" id="remark-confirm-{{openId}}" class="button btn-remark-confirm" data-id="{{openId}}" data-nick-name="{{nickName}}">确认</a>

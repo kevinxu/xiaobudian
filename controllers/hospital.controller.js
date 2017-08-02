@@ -59,18 +59,64 @@ function create(req, res, next) {
       });
 }
 
-function findOne(req, res, next) {
-  const { hospitalId } = req.query;
+function getHospitalDetails(req, res, next) {
+  const { hospitalId, openId } = req.query;
 
-  console.log("hospitalId: " + hospitalId);
+  console.log("hospitalId: " + hospitalId + " openId: " + openId);
   Hospital.get({'_id': hospitalId})
     .then(hosp => {
         if (hosp) {
           console.log(hosp);
-          res.json({
-            success: true,
-            data: hosp
-          });          
+          Managers.get({
+            'openId': openId,
+            'hospitalId': hospitalId
+          }).then(mgr => {
+            if (mgr) {
+              var data = {
+                'hospitalName': hosp.hospitalName,
+                'departments': hosp.departments,
+                'orderTime': hosp.orderTime,
+                'isSuperManager': mgr.superManager
+              };
+
+              // Get all managers
+              Managers.list({
+                'hospitalId': hospitalId
+              }).then(mgrs => {
+                if (mgrs) {
+                  var list = [];
+
+                  for (var i = 0, len = mgrs.length; i < len; i++) {
+                    list.push({
+                      'nickName': mgrs[i].nickName,
+                      'remarkName': mgrs[i].remarkName,
+                      'openId': mgrs[i].openId
+                    });
+                  }
+
+                  data.managers = list;
+                  res.json({
+                    success: true,
+                    data: data
+                  });
+                }
+                else {
+                  res.json({
+                    success: false,
+                    errMsg: "此医院没有管理员！"
+                  });
+                }
+              })
+              .catch(e => next(e));
+            }
+            else {
+              res.json({
+                success: false,
+                errMsg: "此医院不存在这个管理员！"
+              });
+            }
+          })
+          .catch(e => next(e));       
         }
         else {
           res.json({
@@ -539,5 +585,5 @@ function getDept(req, res, next) {
 }
 
 module.exports = {
-  create, getDeptList, getManagers, findOne, update, addDepartment, editDepartment, unbindManager, remarkManagerName, updateOrderTime, isManagerExist, getDept, getHospitalQrCode,
+  create, getDeptList, getManagers, getHospitalDetails, update, addDepartment, editDepartment, unbindManager, remarkManagerName, updateOrderTime, isManagerExist, getDept, getHospitalQrCode,
 };
