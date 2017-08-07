@@ -60,7 +60,7 @@ router.get('/hospitalOrder', (req, res) => {
 
       hospitalController.isManagerExist(ret)
         .then(mgr => {
-          if (mgr && mgr.hospitalId) {
+          if (mgr && mgr.hospitalId && (mgr.disabled == 0)) {
             console.log("The manager exists: " + mgr);
             res.render('index', {
               title: '订单管理',
@@ -109,7 +109,7 @@ router.get('/hospitalMenuSetting', (req, res) => {
 
       hospitalController.isManagerExist(ret)
         .then(mgr => {
-          if (mgr && mgr.hospitalId) {
+          if (mgr && mgr.hospitalId && (mgr.disabled == 0)) {
             console.log("The manager exists: " + mgr);
             res.render('index', {
               title: '膳食菜谱',
@@ -157,7 +157,7 @@ router.get('/hospitalSetting', (req, res) => {
 
       hospitalController.isManagerExist(ret)
         .then(mgr => {
-          if (mgr && mgr.hospitalId) {
+          if (mgr && mgr.hospitalId && (mgr.disabled == 0)) {
             console.log("The manager exists: " + mgr);
             res.render('index', {
               title: '医院设置',

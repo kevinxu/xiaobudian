@@ -88,6 +88,18 @@ const paramSchema = {
     params: {
       hospitalId: Joi.string().required()
     }
+  },
+
+  // PUT /api/hospital/authManager
+  authManager: {
+    body: {
+      hospitalId: Joi.string(),
+      fromOpenId: Joi.string(),
+      toOpenId: Joi.string()
+    },
+    params: {
+      hospitalId: Joi.string().required()
+    }
   }
 };
 
@@ -138,5 +150,9 @@ router.route('/updateOrderTime/:hospitalId')
 // {METHOD} /api/hospital/dept
 router.route('/dept')
   .get(hospitalController.getDept);
+
+// {METHOD} /api/hospital/authManager
+router.route('/authManager/:hospitalId')
+  .put(validate(paramSchema.authManager), hospitalController.authManager);
 
 module.exports = router;

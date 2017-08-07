@@ -214,7 +214,7 @@ define([
   }
 
   function onEditBreakfastCancel() {
-    showOrderNormalMode(0);
+    showOrderNormalMode(0, isSuperManager);
     var initReminder = setInitValueForReminder(0);
     if (initReminder) {
       pickerBreakfastReminder.setValue(initReminder, 100);
@@ -234,7 +234,7 @@ define([
   }
 
   function onEditLunchCancel() {
-    showOrderNormalMode(1);
+    showOrderNormalMode(1, isSuperManager);
     var initReminder = setInitValueForReminder(1);
     if (initReminder) {
       pickerLunchReminder.setValue(initReminder, 100);
@@ -252,7 +252,7 @@ define([
   }
 
   function onEditDinnerCancel() {
-    showOrderNormalMode(2);
+    showOrderNormalMode(2, isSuperManager);
     var initReminder = setInitValueForReminder(2);
     if (initReminder) {
       pickerDinnerReminder.setValue(initReminder, 100);
@@ -313,29 +313,29 @@ define([
           'shippingTimeEnd': shippingEnd
         }).then(function(res){
           if (res.success) {
-            showOrderNormalMode(mealType);
+            showOrderNormalMode(mealType, isSuperManager);
           }
         });
     }
   }
 
-  function showOrderNormalMode(mealType) {
+  function showOrderNormalMode(mealType, isSuperManager) {
     if (mealType == 0) {
-      $$('#btn-edit-breakfast').show();
+      isSuperManager ? $$('#btn-edit-breakfast').show() : $$('#btn-edit-breakfast').hide();
       $$('#btn-edit-breakfast-cancel').hide();
       $$('#btn-edit-breakfast-confirm').hide();
       $$('#picker-breakfast-reminder').attr('disabled', true);
       $$('#picker-breakfast-shipping').attr('disabled', true); 
     }
     else if (mealType == 1) {
-      $$('#btn-edit-lunch').show();
+      isSuperManager ? $$('#btn-edit-lunch').show() : $$('#btn-edit-lunch').hide();
       $$('#btn-edit-lunch-cancel').hide();
       $$('#btn-edit-lunch-confirm').hide();
       $$('#picker-lunch-reminder').attr('disabled', true);
       $$('#picker-lunch-shipping').attr('disabled', true);     
     }
     else if (mealType == 2) {
-      $$('#btn-edit-dinner').show();
+      isSuperManager ? $$('#btn-edit-dinner').show() : $$('#btn-edit-dinner').hide();
       $$('#btn-edit-dinner-cancel').hide();
       $$('#btn-edit-dinner-confirm').hide();
       $$('#picker-dinner-reminder').attr('disabled', true);
@@ -543,7 +543,7 @@ define([
     $$('#ipt-hosp-name').val(hospitalName);
     $$('#ipt-hosp-name').attr('disabled', true);
 
-    $$('#btn-hosp-edit').show();
+    isSuperManager ? $$('#btn-hosp-edit').show() : $$('#btn-hosp-edit').hide();
     $$('#btn-hosp-edit-cancel').hide();
     $$('#btn-hosp-edit-confirm').hide();
   }
@@ -588,7 +588,7 @@ define([
         console.log("Is supper manager: " + isSuperManager);
         showHospitalName();
         showDeptList(res.data.departments);
-        showOrderTimeInfo();
+        showOrderTimeInfo(isSuperManager);
         showManagerList(res.data.managers, isSuperManager);
       }
     });
@@ -607,32 +607,43 @@ define([
     Template.render('#hospQrCodeTpl', data);
   }
 
-  function showOrderTimeInfo() {
+  function showOrderTimeInfo(isSuperManager) {
       pickerBreakfastReminder = addPickerReminder(0, 'picker-breakfast-reminder');
       pickerLunchReminder = addPickerReminder(1, 'picker-lunch-reminder');
       pickerDinnerReminder = addPickerReminder(2, 'picker-dinner-reminder');
       pickerBreakfastShipping = addPickerShipping(0, 'picker-breakfast-shipping');
       pickerLunchShipping = addPickerShipping(1, 'picker-lunch-shipping');
       pickerDinnerShipping = addPickerShipping(2, 'picker-dinner-shipping');
-      showOrderNormalMode(0);
-      showOrderNormalMode(1);
-      showOrderNormalMode(2);
+      showOrderNormalMode(0, isSuperManager);
+      showOrderNormalMode(1, isSuperManager);
+      showOrderNormalMode(2, isSuperManager);
   }
 
   function showManagerList(managerList, isSuperManager) {
+    var mgrs = [];
+
+    // Put self in the first.
+    mgrs.push({
+      'openId': openId,
+      'allowEdit': 1
+    });
+    for (var i = 0, len = managerList.length; i < len; i++) {
+      if (openId == managerList[i].openId) {
+        mgrs[0].nickName = managerList[i].nickName + '(本人)';
+        mgrs[0].remarkName = managerList[i].remarkName;
+      }
+      else {
+        // 超管可以对所有人编辑
+        managerList[i].allowEdit = isSuperManager ? 1 : 0;
+        mgrs.push(managerList[i]);
+      }
+    }
     var data = {
       'isSuperManager': isSuperManager,
-      'managers': managerList
+      'managers': mgrs
     };
     Template.render('#managerListTpl', data);
-    if (!isSuperManager) {
-      $$('.btn-remark-cancel').hide();
-      $$('.btn-remark-confirm').hide();
-      $$('.btn-unbind').hide();
-      $$('.btn-remark').hide();
-      return;   
-    }
-    
+
     Utils.bindEvents([
         {
           element: '.btn-unbind',
@@ -697,6 +708,45 @@ define([
     var nickName = $$(this).data('nick-name');
 
     console.log("nickname: " + nickName);
+    if (openIdManager == openId) {
+      if (isSuperManager) {
+        f7.confirm('您是医院超级管理员，在解绑您自己之前，请将超管权限授权给其中一位管理员！', '解绑', function() {
+          mainView.router.load({
+            url: 'hospital/transfer-manager.html',
+            query: {
+              'openId': openId,
+              'hospitalId': hospitalId,
+              'originPath': originPath
+            },
+            animatePages: false
+          });          
+        });
+      }
+      else {
+        f7.confirm('确认解绑您自己吗？', '解绑', function() {
+          Service.unbingManager(hospitalId, {
+            'hospitalId': hospitalId,
+            'openIdManager': openIdManager
+          }).then(function(res){
+            if (res.success) {
+              //window.location.reload(true);
+              mainView.router.load({
+                url: 'hospital/no-setting.html',
+                query: {
+                  'openId': openId,
+                  'hospitalId': hospitalId,
+                  'originPath': originPath
+                },
+                animatePages: false
+              });
+            }
+          });
+        });        
+      }
+
+      return;
+    }
+
     f7.confirm('确认需要解绑管理员' + nickName + '吗？', '解绑', function() {
         Service.unbingManager(hospitalId, {
           'hospitalId': hospitalId,
@@ -746,7 +796,7 @@ define([
       $$('#ipt-dept-name').show();
       $$('#btn-dept-cancel').hide();
       $$('#btn-dept-confirm').hide(); 
-      $$('#btn-dept-add').show();
+      isSuperManager ? $$('#btn-dept-add').show() : $$('#btn-dept-add').hide();
   }
 
   function changeDept() {
@@ -834,8 +884,15 @@ define([
     $$('#select-dept-list').show();
     $$('#ipt-dept-name').hide();
 
-    $$('#btn-dept-edit').show();
-    $$('#btn-dept-add').show();
+    if (isSuperManager) {
+      $$('#btn-dept-edit').show();
+      $$('#btn-dept-add').show();
+    }
+    else {
+      $$('#btn-dept-edit').hide();
+      $$('#btn-dept-add').hide();      
+    }
+
     $$('#btn-dept-cancel').hide();
     $$('#btn-dept-confirm').hide();
   }

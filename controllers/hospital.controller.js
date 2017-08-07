@@ -81,7 +81,8 @@ function getHospitalDetails(req, res, next) {
 
               // Get all managers
               Managers.list({
-                'hospitalId': hospitalId
+                'hospitalId': hospitalId,
+                'disabled': 0
               }).then(mgrs => {
                 if (mgrs) {
                   var list = [];
@@ -429,24 +430,59 @@ function unbindManager(req, res, next) {
   console.log("hospitalId: " + hospitalId);
   console.log("manager openid: " + openIdManager);
 
-  Managers.updateOne(openIdManager, {
-    disabled: 1
+  Managers.get({
+    'openId': openIdManager,
+    'hospitalId': hospitalId,
+    'superManager': 1
   }).then(mgr => {
     if (mgr) {
-      res.json({
-        success: true,
-        page: { current: 1, total: mgr.length },
-        data: mgr
+       res.json({
+        success: false,
+        errCode: 10001,
+        errMsg: "您正在解绑医院超级管理员，请先转移超管权限！"
       });
+
+      return;     
     }
-    else {
-      res.json({
+
+    Hospital.get({
+      '_id': hospitalId
+    }).then(hosp => {
+      if (hosp) {
+
+        Managers.updateOne(openIdManager, {
+          disabled: 1
+        }).then(mgr => {
+          if (mgr) {
+            res.json({
+              success: true,
+              data: mgr
+            });
+
+            wechatHospital.sendMessage(openIdManager, {
+              'hospitalName': hosp.hospitalName
+            });
+          }
+          else {
+            res.json({
+                success: false,
+                errCode: 10003,
+                errMsg: "此管理员不存在！"
+            });     
+          }
+        })
+        .catch(e => next(e));
+      }
+      else {
+        res.json({
           success: false,
-          errMsg: "此管理员不存在！"
-      });     
-    }
-  })
-  .catch(e => next(e));
+          errCode: 10002,
+          errMsg: "此医院不存在！"
+        });
+      }
+    })
+    .catch(e => next(e));
+  });
 }
 
 function remarkManagerName(req, res, next) {
@@ -584,6 +620,75 @@ function getDept(req, res, next) {
     .catch(e => next(e));
 }
 
+function authManager(req, res, next) {
+  var hospitalId = req.params.hospitalId;
+  var fromOpenId = req.body.fromOpenId;
+  var toOpenId = req.body.toOpenId;
+
+  console.log("hospitalId: " + hospitalId + " fromOpenId: " + fromOpenId + " toOpenId: " + toOpenId);
+
+  Managers.get({
+    'hospitalId': hospitalId,
+    'openId': toOpenId
+  }).then(mgr => {
+    if (mgr) {
+      Managers.updateOne(toOpenId, {
+        'superManager': 1
+      }).then(result => {
+        console.log(result);
+        if (result.ok == 1) {
+          Managers.updateOne(fromOpenId, {
+            'superManager': 0
+          }).then(result => {
+            if (result.ok == 1) {
+              res.json({
+                success: true,
+                data: result
+              });
+            }
+            else {
+              res.json({
+                success: false,
+                errCode: 10002,
+                errMsg: "授权管理员失败"
+              });
+            }
+          })
+        }
+        else {
+          res.json({
+            success: false,
+            errCode: 10003,
+            errMsg: "授权管理员失败"
+          });
+        }
+      })
+      .catch(e => next(e));
+    }
+    else {
+      res.json({
+        success: false,
+        errMsg: "目标管理员不存在！",
+        errCode: 10001
+      });
+    }
+  })
+  .catch(e => next(e));
+}
+
 module.exports = {
-  create, getDeptList, getManagers, getHospitalDetails, update, addDepartment, editDepartment, unbindManager, remarkManagerName, updateOrderTime, isManagerExist, getDept, getHospitalQrCode,
+  create,
+  getDeptList,
+  getManagers,
+  getHospitalDetails,
+  update,
+  addDepartment,
+  editDepartment,
+  unbindManager,
+  remarkManagerName,
+  updateOrderTime,
+  isManagerExist,
+  getDept,
+  getHospitalQrCode,
+  authManager,
 };

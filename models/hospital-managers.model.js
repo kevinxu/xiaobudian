@@ -45,7 +45,8 @@ const ManagersSchema = new mongoose.Schema({
   },
   // 1 - unbind; 0 - bind;
   disabled: {
-    type: Number
+    type: Number,
+    default: 1
   },
   // 私有字段
   remarkName: {

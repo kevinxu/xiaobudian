@@ -12,7 +12,8 @@ define([], function () {
     menuManage: '膳食菜谱',
     order: '订单管理',
     setting: '医院设置',
-    readMe: '订餐须知'
+    readMe: '订餐须知',
+    transferManager: '转移超管权限'
   };
 
   return CONSTANT_VALUE;

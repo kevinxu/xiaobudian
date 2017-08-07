@@ -5,6 +5,7 @@ const wechat = require('wechat');
 const Hospital = require('../models/hospital.model');
 const Managers = require('../models/hospital-managers.model')
 const WechatCommon = require('./wechat.common');
+const Utils = require('./utils');
 
 // 环境变量
 const env = process.env.NODE_ENV || 'development';
@@ -18,6 +19,7 @@ const wechatToken ="WECHAT-HOSPITAL-ACCESS-TOKEN";
 
 var wechatAccessToken;
 var menuCreated = 0;
+var wechatApi;
 
 function saveToken() {
     WechatCommon.getToken(config.wechatHospital.appId, config.wechatHospital.appSecret)
@@ -90,9 +92,7 @@ var EventFunction = {
   VIEW: eventView
 };
 
-function subscribe(message, req, res) {
-
-  var openId = message.FromUserName;
+function handleManager(openId, eventKey, res) {
 
   WechatCommon.getUserInfo(wechatAccessToken, openId).then(result => {
     var nickName = result.nickname;
@@ -102,9 +102,8 @@ function subscribe(message, req, res) {
     var province = result.province;
     var headImgUrl = result.headimgurl;
     var remark = result.remark;
-    var superManager = 0;
     var subscribeStatus = 1;
-    var disabled = 0;
+    var disabled;
     var hospitalId = "";
     var departmentId = "";
     var recommendHospitalId = "";
@@ -117,30 +116,19 @@ function subscribe(message, req, res) {
       return;
     }
 
-    if (message.EventKey) {
-      var qrscene = message.EventKey;
-      // skip qrscene_
-      var tmpStr = qrscene.substring(8);
-      var channel = tmpStr.substr(0, 9);
+    if (eventKey) {
+      var channel = eventKey.substr(0, 9);
       // skip channel1-
-      tmpStr = tmpStr.substring(9);
+      var tmpStr = eventKey.substring(9);
+      console.log("qrscene: " + eventKey + " tmpStr: " + tmpStr + " channel: " + channel);
 
       if (channel == "channel1-") {
         var arr = tmpStr.split("$");
         hospitalId = arr[0];
         departmentId = arr[1];
+        disabled = 0;
 
         console.log("openId: " + openId + " hospitalId: " + hospitalId + " departmentId: " + departmentId);
-
-        Hospital.get({'_id': hospitalId})
-          .then(hosp => {
-            console.log("get hospital with id: " + hospitalId);
-            console.log(hosp);
-            var hospitalName = hosp.hospitalName;
-            strReply = "恭喜您成为" + hospitalName + "点餐管理员！" +
-                    "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-            res.reply(strReply);
-        });
       }
       else if (channel == "channel2-") {
         console.log("从分享渠道扫码进入");
@@ -149,28 +137,21 @@ function subscribe(message, req, res) {
         recommendOpenId = arr[1];
 
         console.log("recommend hospitalId: " + recommendHospitalId + " openId: " + recommendOpenId);
-        strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-        res.reply(strReply);
-        }
+      }
       else {
-        console.log("从未知渠道扫码进入");
-        strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-        res.reply(strReply);
+        console.log("从未知渠道扫码进入, channel: " + channel);
       }
 
     }
     else {
       console.log("从公众号直接扫描进入");
-      strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-      res.reply(strReply);
     }
 
-    Managers.findOne({'openId': openId})
+    Managers.get({'openId': openId})
       .then(mgr => {
         if (mgr) {
           console.log("The manager with openid " + openId + " exists.");
           var data = {
-              superManager: superManager,
               nickName: nickName,
               subscribeStatus: subscribeStatus,
               sex: sex,
@@ -179,11 +160,37 @@ function subscribe(message, req, res) {
               country: country,
               headImgUrl: headImgUrl,
               remark: remark,
-              disabled: disabled
           };
 
+
           if (hospitalId) {
-            data.hospitalId = hospitalId;
+            // 从医院二维码进来
+            if (mgr.hospitalId == hospitalId && mgr.disabled == 0) {
+              // 扫码同一个医院二维码
+              strReply = "欢迎回来！";
+              res.reply(strReply);
+            }
+            else {
+              // 切换医院
+              Hospital.get({'_id': hospitalId})
+                .then(hosp => {
+                  console.log("get hospital with id: " + hospitalId);
+                  console.log(hosp);
+                  var hospitalName = hosp.hospitalName;
+                  strReply = "恭喜您成为" + hospitalName + "点餐管理员！" +
+                          "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+                  res.reply(strReply);
+              });
+
+              data.disabled = 0;
+              data.hospitalId = hospitalId;
+              // 切换医院，清除超管权限
+              data.superManager = 0;
+            }
+          }
+          else {
+            // 从其他渠道进来
+
           }
 
           if (departmentId) {
@@ -198,15 +205,31 @@ function subscribe(message, req, res) {
             data.recommendOpenId = recommendOpenId;
           }
 
-          Managers.updateOne(openId, data)
+          Managers.updateOne(openId, data);
         }
         else {
           console.log("new manager");
+          if(hospitalId) {
+              Hospital.get({'_id': hospitalId})
+                .then(hosp => {
+                  console.log("get hospital with id: " + hospitalId);
+                  console.log(hosp);
+                  var hospitalName = hosp.hospitalName;
+                  strReply = "恭喜您成为" + hospitalName + "点餐管理员！" +
+                          "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+                  res.reply(strReply);
+              });           
+          }
+          else {
+            // 从其他渠道进来
+            strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+            res.reply(strReply);
+          }
+
           const manager = new Managers({
             openId,
             hospitalId,
             departmentId,
-            superManager,
             nickName,
             subscribeStatus,
             sex,
@@ -216,14 +239,23 @@ function subscribe(message, req, res) {
             headImgUrl,
             remark,
             recommendHospitalId,
-            recommendOpenId,
-            disabled
+            recommendOpenId
           });
 
           manager.save();
         }
       });
   });
+}
+
+function subscribe(message, req, res) {
+
+  var openId = message.FromUserName;
+  var qrscene = message.EventKey;
+  // skip qrscene_
+  qrscene = qrscene.substring(8);
+
+  handleManager(openId, qrscene, res);
 }
 
 function unsubscribe(message, req, res) {
@@ -238,7 +270,21 @@ function unsubscribe(message, req, res) {
 
 function scan(message, req, res) {
   var openId = message.FromUserName;
-  res.reply('欢迎再次光临');
+
+  Managers.get({
+    'openId': openId
+  }).then(mgr => {
+    if (mgr) {
+      if (message.EventKey) {
+        console.log("EventKey: " + message.EventKey);
+        handleManager(openId, message.EventKey, res);
+      }
+    }
+    else {
+      res.reply('此管理员不存在！');
+    }
+  })
+  .catch(e => next(e));
 }
 
 function eventClick(message, req, res) {
@@ -270,10 +316,33 @@ function getAccessUserOpenId(code) {
   return WechatCommon.getAccessUserOpenId(config.wechatHospital.appId, config.wechatHospital.appSecret, code);
 }
 
+function sendMessage(openId, msg) {
+  var time = new Date();
+  var data = {
+    'first': {
+      'value': "您已被医院超级管理员解除" + msg.hospitalName + "管理员权限！",
+      'color': "#173177"
+    },
+    'hospital': {
+      'value': msg.hospitalName,
+      'color': "#173177"
+    },
+    'time': {
+      'value': time.format("yyyy-MM-dd hh:mm:ss"),
+      'color': "#173177"
+    }
+  };
+
+  WechatCommon.sendTemplateMessage(wechatApi, openId, config.wechatHospital.templateId, "", data, function(res) {
+    console.log("wechat send msg response: " + res);
+  });
+}
+
 function init() {
   refreshToken();
+  wechatApi = WechatCommon.createApiInstance(config.wechatHospital.appId, config.wechatHospital.appSecret);
 }
 
 module.exports = {
-  init, getDeptQrCode, all, getAccessUserOpenId, getHospitalQrCode,
+  init, getDeptQrCode, all, getAccessUserOpenId, getHospitalQrCode, sendMessage,
 };

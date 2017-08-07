@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Promise = global.Promise;
 
 const HospitalSchema = new mongoose.Schema({
-  // 医院创建者的openId, 也即超管OpenId
+  // 医院创建者的openId, 也即初始超管OpenId，一旦医院创建不会改变
   openId: {
     type: String,
     required: true

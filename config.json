@@ -1,13 +1,13 @@
 {
   "port": "3005",
   "logTopic": "is_test_action",
-  "dbIp": "192.168.0.104",
+  "dbIp": "172.16.110.71",
   "dbPort": "27017",
   "pcDebug": {
     "debug": 1,
-    "debugManagerOpenId": "oTt421TWJGSGXPfGe01zMUR2aSUU",
+    "debugManagerOpenId": "oTt421T8p_6QfzTV0n5VJ1cWwQ1Y",
     "debugPatientOpenId": "oIj_Y024I_w7uJnkuGo7kGcwJ4LM",
-    "debugHospitalId": "596c6af95c7b2829908c406d",
+    "debugHospitalId": "5979b0a81a68db1ef87209a7",
     "debugDeptId": "5979b0ed1a68db1ef87209aa"
   },
   "wechatPatient": {
@@ -19,10 +19,11 @@
   "wechatHospital": {
   	"token": "xiaobudian" ,
   	"appId": "wxa8bb630b53a0aefd",
-  	"appSecret": "096ba29a7d84d7d6434a642a76063c0a"
+  	"appSecret": "096ba29a7d84d7d6434a642a76063c0a",
+    "templateId": "B8LjBusyELxnWakkObcZAA4cdiv5QOt92UQw5TYLvps"
   },
   "redis": {
-  	"host": "192.168.0.104",
+  	"host": "172.16.110.71",
   	"port": "6379"
   },
   "wechatMenuHospital": [
