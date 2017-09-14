@@ -260,11 +260,11 @@ define([], function () {
     },
 
     qiniuUploadImg: function(browse_button, fileUploadFun, progressHandle) {
-      var domain = 'http://ojp7zgdna.bkt.clouddn.com/';
+      var domain = 'http://ov6l3j103.bkt.clouddn.com/';
       var uploader = Qiniu.uploader({
         runtimes: 'html5,flash,html4', //上传模式,依次退化
         browse_button: browse_button, //上传选择的点选按钮，**必需**
-        uptoken_url: '/upqiniu', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成   //node接口
+        uptoken_url: '/api/qiniu/getToken', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由服务端生成   //node接口
         //uptoken_url : '/qiniu/commonToken',   //java接口
         //unique_names: true,
         multi_selection: false,
@@ -285,6 +285,7 @@ define([], function () {
                 return;
               }
               document.getElementById('j_progress').style.display = 'block';
+              console.log("FilesAdded");
               uploader.start();
             });
           },
@@ -318,8 +319,18 @@ define([], function () {
           'UploadComplete': function UploadComplete(up, file, info) {}
         }
       });
-    }
+    },
+
+    isUploadSupported: function() {
+      if (navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/)) {
+          return false;
+      }
+      var elem = document.createElement('input');
+      elem.type = 'file';
+      return !elem.disabled;
+    }   
   };
+
 
   Date.prototype.format = function (format) {
     var date = {

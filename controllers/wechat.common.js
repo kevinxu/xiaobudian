@@ -335,7 +335,7 @@ function createMenu(appId, accessToken, buttons) {
   // OAuth
   for (var i = 0, len = buttons.length; i < len; i++) {
     var oauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-              appId + "&redirect_uri=" +
+              appId + "&redirect_uri=" + config.domain +
               buttons[i].url + "&response_type=code&scope=snsapi_base#wechat_redirect";
     reqbody.button[i].url = oauthUrl;
   }

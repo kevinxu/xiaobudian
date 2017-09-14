@@ -21,7 +21,50 @@ define([
     PATIENT_ORDER: 'patient/online-order.html',
     PATIENT_MY_ORDER: 'patient/my-order.html',
     PATIENT_READ_ME: 'patient/read-me.html',
-    PATIENT_NO_SETTING: 'patient/no-setting.html'
+    PATIENT_NO_SETTING: 'patient/no-setting.html',
+
+    // 餐馆端
+    RESTAURANT_SETTING: 'restaurant/setting.html',
+    RESTAURANT_NO_SETTING: 'restaurant/no-setting.html',
+    RESTAURANT_MENU_SETTING: 'restaurant/menu-setting.html',
+
+    // 餐馆客户端
+    CUSTOMER_ONLINE_ORDER: 'customer/online-order.html',
+    CUSTOMER_NO_SETTING: 'customer/no-setting.html',
+    CUSTOMER_ORDER_DONE: 'customer/order-done.html',
+    CUSTOMER_MY_ORDER: 'customer/my-order.html',
+    CUSTOMER_READ_ME: 'customer/read-me.html',
+  };
+
+  var CONTROLLER = {
+    // 医院端
+    hospitalSetting: 'hospital/setting',
+    hospitalApply: 'hospital/apply',
+    hospitalMenuManage: 'hospital/menu-manage',
+    hospitalNoSetting: 'hospital/no-setting',
+    hospitalOrder: 'hospital/order',
+    hospitalTransferManager: 'hospital/transfer-manager',
+
+    // 患者端
+    patientOnlineOrder: 'patient/online-order',
+    patientConfirmOrder: 'patient/confirm-order',
+    patientMyOrder: 'patient/my-order',
+    patientNoSetting: 'patient/no-setting',
+    patientReadMe: 'patient/read-me',
+
+    // 餐馆端
+    restaurantSetting: 'restaurant/setting',
+    restaurantApply: 'restaurant/apply',
+    restaurantNoSetting: 'restaurant/no-setting',
+    restaurantTransferManager: 'restaurant/transfer-manager',
+    restaurantMenuSetting: 'restaurant/menu-setting',
+
+    // 餐馆客户端
+    customerOnlineOrder: 'customer/online-order',
+    customerConfirmOrder: 'customer/confirm-order',
+    customerOrderDone: 'customer/order-done',
+    customerMyOrder: 'customer/my-order',
+    customerReadMe: 'customer/read-me',
   };
 
   var Router = {
@@ -81,7 +124,7 @@ define([
       return;
     }
 
-    require(['controllers/' + name + '.ctrl'], function (controller) {
+    require(['controllers/' + CONTROLLER[title] + '.ctrl'], function (controller) {
       controller.init(query);
 
     });

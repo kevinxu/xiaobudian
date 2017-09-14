@@ -1,0 +1,74 @@
+<div class="page page-customer-online-order navbar-fixed toolbar-fixed" data-page="customer-online-order">
+  <div class="page-content">
+  	<div class="wrapper-main-content">
+	  	<div id="wrapper-head">
+		  	<div id="title-page"><script type="text/template" id="restInfoTpl">{{restaurantName}}-在线点餐</script></div>
+		</div>
+		<div id="wrapper-content-area">
+			<div id="wrapper-leftarea">		
+				<div class="list-block">
+				<script type="text/template" id="dishTypeInfoTpl">
+				<ul>
+					{{#each this}}
+					<li id="wrapper-id-{{@index}}" class="item-content btn-dish-type" data-dish-type-index="{{@index}}">
+						<div class="item-inner">
+							<div class="item-title">{{dishType}}</div>
+						</div>
+					</li>
+					{{/each}}
+				</ul>
+				</script>
+				</div>
+			</div>
+			<div id="wrapper-rightarea">
+			<script type="text/template" id="detailMenuInfoTpl">
+				{{#each this}}
+				<div id="wrapper-food-{{@index}}" class="content-block-dish-type">
+					<div class="content-block-title title-dish-type">
+						<span>{{dishType}}</span>
+					</div>
+					<div class="card">
+						<div class="card-content">		
+							<div class="list-block media-list">
+								<ul>
+									{{#each dishes}}
+									<li class="item-content">
+										<div class="item-media">
+											<img src="{{dishImage}}" width="70" height="70">
+										</div>
+										<div class="item-inner">
+											<div class="item-title">{{dishName}}</div>
+											<div class="item-title-row">
+												<div class="txt-price">￥{{price}}</div>
+												<div class="wrapper-plus-minus">
+													<span><a href="#" class="btn-minus" data-dish-id="{{id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/minus.png" class="icon-minus" width="30" height="30"></a></span>
+													<span id="dish-{{id}}" class="order-number">0</span>
+													<span><a href="#" class="btn-plus" data-dish-id="{{id}}" data-dish-price="{{price}}}" data-dish-type="{{dishType}}" data-dish-name="{{dishName}}"><img src="img/plus.png" class="icon-plus" width="30" height="30"></a></span>
+												</div>
+											</div>
+										</div>				
+									</li>
+									{{/each}}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+			</script>
+			</div>
+  		</div>
+  	</div>
+  	<div id="footer">
+  		<div class="bucket-area">
+  			<table class="wrapper-bucket-area">
+  				<tr>
+  					<td><a href="#"><span id="total-order-number" class="badge">0</span><br><img class="img-bucket" src="img/bucket.png" width="30" height="30"></a></td>
+  					<td id="txt-total-fee">共￥<span id="bill-number">0</span><br>配送</td>
+  				</tr>
+  			</table>
+  		</div>
+  		<div class="btn-confirm-order"><a href="#" id="btn-confirm">提交订单</a></div>
+  	</div>
+  </div>
+</div>

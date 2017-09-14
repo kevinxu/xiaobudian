@@ -1,0 +1,97 @@
+<div class="page page-customer-confirm-order" data-page="customer-confirm-order">
+  <div class="page-content">
+  	<div class="wrapper-main-content">
+	  	<div id="txt-prompt" class="accordion-item">
+	  		<a href="#" class="item-content item-link">
+	  			<div class="item-inner">
+	  				<div id="id-more-info" class="item-title item-title-name">
+	  					<span>如需外送，请完善送餐信息</span>
+	  					<img src="img/arrow_down_big.png" width="30" height="30">
+	  				</div>
+
+	  			</div>
+	  		</a>
+	  		<div class="accordion-item-content">
+	  			<div class="card">
+	  				<div class="card-content">
+					  	<form id="form-customer-detail" class="list-block">
+					  		<ul>
+					  			<li>
+					  				<div class="item-content">
+					  					<div class="item-inner">
+					  						<div class="item-title label">您的姓名</div>
+					  						<div class="item-input">
+					  							<input id="ipt-patient-name" type="text" name="realName" placeholder="请输入">
+					  						</div>
+					  					</div>		
+					  				</div>
+					  			</li>
+					  			<li>
+					  				<div class="item-content">
+					  					<div class="item-inner">
+					  						<div class="item-title label">手机号</div>
+					  						<div class="item-input">
+					  							<input id="ipt-patient-mobile" type="text" name="mobile" placeholder="请输入">
+					  						</div>
+					  					</div>		
+					  				</div>  				
+					  			</li>
+					  			<li>
+					  				<div class="item-content">
+					  					<div class="item-inner">
+					  						<div class="item-title label">送餐地址</div>
+					  						<div class="item-input">
+					  							<input id="ipt-customer-addr" type="text" name="address" placeholder="请输入">
+					  						</div>
+					  					</div>		
+					  				</div>  				
+					  			</li>			
+					  		</ul>
+					  	</form>	  					
+	  				</div>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div class="card">
+	  		<div class="card-content">
+			  	<form id="form-customer-detail" class="list-block">
+			  		<ul>
+			  			<li>
+			  				<div class="item-content">
+			  					<div class="item-inner">
+			  						<div class="item-title label">所在桌号</div>
+			  						<div class="item-input">
+			  							<input id="ipt-desk-name" type="text" name="deskName" readonly placeholder="请输入">
+			  						</div>
+			  					</div>		
+			  				</div>  				
+			  			</li>			
+			  		</ul>
+			  	</form>  			
+	  		</div>
+	  	</div>
+	  	<div class="content-block-title">您的订单</div>
+	  	<div class="card">
+	  		<div class="card-content">
+	  			<script type="text/template" id="orderDishesTpl">
+				<table id="wrapper-dish-list">
+					{{#each this}}
+					<tr>
+						<td>{{dishName}}</td><td>x{{count}}</td><td>￥{{fee}}</td>
+					</tr>
+					{{/each}}
+				</table>
+				</script>
+	  		</div>
+	  	</div>
+  	</div>
+  	<div id="footer">
+  		<div class="bucket-area">
+  			<div class="wrapper-content">
+	  			餐费共<span class="highlight-color">￥</span><span id="my-total-fee" class="highlight-color">0</span>			
+  			</div>
+  		</div>
+  		<div class="btn-confirm-order"><a href="#" id="btn-confirm-my-order">确定</a></div>
+  	</div>
+  </div>
+</div>

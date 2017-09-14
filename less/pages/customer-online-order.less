@@ -1,0 +1,146 @@
+.page-customer-online-order{
+
+	#wrapper-head{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 2;
+	//	overflow: scroll;
+
+		#title-page{
+			text-align: center;
+			background: #007aff;
+			color: #fff;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+	}
+
+	.wrapper-main-content{
+		margin-bottom: 60px;
+	}
+
+	#wrapper-content-area{
+		width: 100%;
+		position: absolute;
+		top: 40px;
+		bottom: 60px;
+		left: 0;
+
+		#wrapper-leftarea{
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: #dddddd;
+			width: 25%;
+			height: 100%;
+			//overflow: hidden;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+			z-index: 2;
+
+			.list-block{
+				margin-top: 5px;
+			}
+		}
+
+		#wrapper-rightarea{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 25%;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+		//	float: left;
+			width: 75%;
+		//	height: 100%;
+		//	margin-top: 70px;
+		//	margin-left: 25%;
+			padding-top: 0;
+
+			.txt-price{
+				padding: 10px 0;
+			}
+
+			.icon-minus{
+				text-align: center;
+				vertical-align: middle;
+			}
+
+			.icon-plus{
+				text-align: center;
+				vertical-align: middle;
+			}
+
+			.order-number{
+				padding-bottom: 50px;
+				line-height: 40px;
+			}
+		}
+	}
+
+	.btn-active{
+		border: 2px;
+		background: #007aff;
+	}
+
+	.title-dish-type{
+		font-size: 20px;
+		margin-top: 10px;	
+	}
+
+	#footer{
+		position: fixed;
+		bottom: 0;
+		height: 60px;
+		width: 100%;
+		z-index: 3;
+		text-align: center;
+
+		.bucket-area{
+			float: left;
+			width: 70%;
+			height: 100%;
+			background: #fff;
+			text-align: center;
+
+			.wrapper-bucket-area{
+				margin-top: 0px;
+			//	margin-bottom: 5px;
+				margin-left: 20px;
+
+				tr{
+					margin-top: 0;
+
+					td{
+						margin-top: 0;
+						padding-top: 0;
+						padding-left: 20px;
+						padding-right: 20px;
+						text-align: center;
+					}
+				}
+			}
+
+
+			#txt-total-fee{
+				font-size: 15px;
+			}
+		}
+
+		.btn-confirm-order{
+			float: left;
+			width: 30%;
+			height: 100%;
+			line-height: 60px;
+			text-align: center;
+			background: #007aff;
+			vertical-align: middle;
+
+			a{
+				color: #fff;
+			}
+		}
+	}
+}

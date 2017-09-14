@@ -1,14 +1,29 @@
 {
+  "__mode-comment": "0 - hospital; 1 - restaurant",
+  "mode": 1,
+  "domain": "http://xiaobu.hk1.mofasuidao.cn",
   "port": "3005",
   "logTopic": "is_test_action",
-  "dbIp": "172.16.110.71",
+  "dbIp": "172.16.110.81",
   "dbPort": "27017",
+  "redis": {
+    "host": "172.16.110.81",
+    "port": "6379"
+  },
   "pcDebug": {
     "debug": 1,
     "debugManagerOpenId": "oTt421T8p_6QfzTV0n5VJ1cWwQ1Y",
     "debugPatientOpenId": "oIj_Y024I_w7uJnkuGo7kGcwJ4LM",
+    "debugCustomerOpenId": "oIj_Y09qM_-ysRFhlQMJuIMydt2I",
     "debugHospitalId": "5979b0a81a68db1ef87209a7",
+    "debugRestaurantId": "599266111f7c743b80cbfc67",
     "debugDeptId": "5979b0ed1a68db1ef87209aa"
+  },
+  "qiniu": {
+    "domain": "http://ov6l3j103.bkt.clouddn.com/",
+    "accessKey": "TvKS9iuPRc8cvi8PU6B0yF5VahYXVVlPSrSijBSV",
+    "secretKey": "mqpc2ilmRtaURP0W6xXtz11OmadVkv0fzWsAPyFU",
+    "bucket": "xiaobudian"
   },
   "wechatPatient": {
   	"token": "xiaobudian" ,
@@ -22,28 +37,36 @@
   	"appSecret": "096ba29a7d84d7d6434a642a76063c0a",
     "templateId": "B8LjBusyELxnWakkObcZAA4cdiv5QOt92UQw5TYLvps"
   },
-  "redis": {
-  	"host": "172.16.110.71",
-  	"port": "6379"
+  "wechatRestaurant": {
+    "token": "xiaobudian" ,
+    "appId": "wxa8bb630b53a0aefd",
+    "appSecret": "096ba29a7d84d7d6434a642a76063c0a",
+    "templateId": "OIJfawGwj7RqWpqMPCi4FFXN08N4RCiPaucWRWoasn0"
+  },
+  "wechatCustomer": {
+    "token": "xiaobudian" ,
+    "appId": "wx3e81407b07989fa9",
+    "appSecret": "4bd4a9138a7ced013cdc28c27c2568a8",
+    "templateId": "B8LjBusyELxnWakkObcZAA4cdiv5QOt92UQw5TYLvps"
   },
   "wechatMenuHospital": [
       {
         "type": "view",
         "name": "订单管理",
         "key": "V1001_ORDER_MANAGEMENT",
-        "url": "http://xiaobudian.tunnel.phpor.me/hospitalOrder"
+        "url": "/hospitalOrder"
       },
       {
         "type": "view",
         "name": "膳食管理",
         "key": "V1001_MENU_MANAGEMENT",
-        "url": "http://xiaobudian.tunnel.phpor.me/hospitalMenuSetting"
+        "url": "/hospitalMenuSetting"
       },
       {
         "type": "view",
         "name": "医院设置",
         "key": "V1001_HOSPITAL_SETTING",
-        "url": "http://xiaobudian.tunnel.phpor.me/hospitalSetting"
+        "url": "/hospitalSetting"
       }
     ],
   "wechatMenuPatient": [
@@ -51,19 +74,59 @@
         "type": "view",
         "name": "在线下单",
         "key": "V2001_ONLINE_BILL",
-        "url": "http://xiaobudian.tunnel.phpor.me/patientOnlineOrder"
+        "url": "/patientOnlineOrder"
       },
       {
         "type": "view",
         "name": "我的订单",
         "key": "V2001_MY_ORDER",
-        "url": "http://xiaobudian.tunnel.phpor.me/patientMyOrder"
+        "url": "/patientMyOrder"
       },
       {
         "type": "view",
         "name": "点餐须知",
         "key": "V2001_ORDER_INTRODUCTION",
-        "url": "http://xiaobudian.tunnel.phpor.me/patientReadme"
+        "url": "/patientReadme"
+      }
+    ],
+  "wechatMenuRestaurant": [
+      {
+        "type": "view",
+        "name": "订单管理",
+        "key": "V1002_ORDER_MANAGEMENT",
+        "url": "/restaurantOrder"
+      },
+      {
+        "type": "view",
+        "name": "菜单设置",
+        "key": "V1002_MENU_MANAGEMENT",
+        "url": "/restaurantMenuSetting"
+      },
+      {
+        "type": "view",
+        "name": "餐馆设置",
+        "key": "V1002_RESTAURANT_SETTING",
+        "url": "/restaurantSetting"
+      }
+    ],
+  "wechatMenuCustomer": [
+      {
+        "type": "view",
+        "name": "在线下单",
+        "key": "V2001_ONLINE_BILL",
+        "url": "/customerOnlineOrder"
+      },
+      {
+        "type": "view",
+        "name": "我的订单",
+        "key": "V2001_MY_ORDER",
+        "url": "/customerMyOrder"
+      },
+      {
+        "type": "view",
+        "name": "点餐须知",
+        "key": "V2001_ORDER_INTRODUCTION",
+        "url": "/customerReadme"
       }
     ]
 }

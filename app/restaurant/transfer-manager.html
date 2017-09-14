@@ -1,0 +1,26 @@
+<div class="page page-transfer-manager no-navbar" data-page="restaurant-transfer-manager">
+  <div class="page-content">
+    <div class="page-title">转移超管权限</div>
+
+    <form id="form-manager-list" class="list-block">
+        <script type="text/template", id="managersTpl">
+        <ul>
+          {{#each this}}
+          <li>
+            <label class="label-radio item-content">
+              <input type="radio" name="manager" value="{{openId}}">
+              <div class="item-inner">
+                <div class="item-title">{{nickName}}</div>
+              </div>
+            </label>
+          </li>
+          {{/each}}
+        </ul>
+        </script>
+    </form>
+
+    <div class="content-block" class="col-50">
+          <a href="#" id="btn-confirm-transfer" class="button active big-font">确认</a>
+    </div>
+  </div>
+</div>  

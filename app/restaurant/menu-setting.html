@@ -1,0 +1,67 @@
+<div class="page page-menu-setting" data-page="restaurant-menu-setting">
+  <div class="page-content">
+  	<div class="page-title">菜单设置</div>
+
+	<div id="wrapper-content-area">
+		<div id="wrapper-leftarea">
+			<div class="wrapper-add-dish-type">
+				<a href="#" id="btn-add-dish-type" class="wrapper-icon-add"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+			</div>			
+			<div class="list-block">
+			<script type="text/template" id="dishTypeInfoTpl">
+			<ul>
+				{{#each this}}
+				<li id="wrapper-id-{{@index}}" class="item-content swipeout btn-dish-type" data-dish-type-index="{{@index}}">
+					<div class="swipeout-content item-inner">
+						<div class="item-title">{{dishType}}</div>
+					</div>
+					<div class="swipeout-actions-left">
+						<a href="#" class="dish-type-delete bg-red" data-dish-type-id="{{id}}">删除</a>
+					</div>
+					<div class="swipeout-actions-right">
+						<a href="#" class="dish-type-edit bg-lightblue" data-dish-type-id="{{id}}" data-dish-type="{{dishType}}">编辑</a>
+					</div>
+				</li>
+				{{/each}}
+			</ul>
+			</script>
+			</div>
+		</div>
+		<div id="wrapper-rightarea">
+			<script type="text/template" id="detailMenuInfoTpl">
+			{{#each this}}
+			<div id="wrapper-food-{{@index}}" class="content-block-dish-type">
+				<div class="content-block-title title-dish-type">
+					<span>{{dishType}}</span>
+					<a href="#" class="btn-add-dish" data-dish-type-id="{{id}}" data-dish-type="{{dishType}}"><img src="img/add.png" class="icon-add" width="25" height="25"></a>
+				</div>
+				<div class="card">
+					<div class="card-content">		
+						<div class="list-block media-list">
+							<ul>
+								{{#each dishes}}
+								<li class="item-content swipeout">
+									<div class="item-media">
+										<img src="{{dishImage}}" width="50" height="50">
+									</div>
+									<div class="swipeout-content item-inner">
+										<div class="item-title">{{dishName}}</div>
+										<div class="item-after">￥{{price}}</div>
+									</div>
+							  		<div class="swipeout-actions-right">
+										<a href="#" class="dish-delete bg-red" data-id="{{id}}">删除</a>
+										<a href="#" class="dish-edit bg-lightblue" data-id="{{id}}" data-dish-name="{{dishName}}" data-price="{{price}}" data-photo-url="{{dishImage}}">编辑</a>
+									</div>						
+								</li>
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{/each}}
+			</script>
+		</div>
+  	</div>
+  </div>
+</div>

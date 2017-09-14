@@ -1,0 +1,148 @@
+<div class="page page-setting no-navbar" data-page="restaurant-setting">
+  <div class="page-content">
+    <div class="list-block">
+      <ul>
+        <li class="accordion-item">
+          <a href="#" class="item-content item-link">
+            <div class="item-inner">
+              <div class="item-title item-title-name">餐馆设置</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="content-block">
+                <ul>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title label item-name">餐馆名称</div>
+                        <div id="wrap-hosp-name" class="item-input wrapper-ipt-item">
+                          <input id="ipt-hosp-name" type="text" name="hospital-name" disabled autofocus="autofocus">
+                        </div>
+                        <div class="item-after"><a href="#" id="btn-hosp-edit" class="button">编辑</a></div>
+                        <div class="item-after"><a href="#" id="btn-hosp-edit-cancel" class="button">取消</a></div>
+                        <div class="item-after"><a href="#" id="btn-hosp-edit-confirm" class="button">确认</a></div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div id="wrap-dept-name" class="item-title label item-name">餐桌设置</div>
+                        <div class="item-input wrapper-ipt-item">
+                        <select id="select-dept-list">
+                          <script type="text/template", id="deptInfoTpl">
+                          {{#each this}}
+                          <option id="opt-{{@index}}" data-dept-id="{{_id}}">{{name}}</option>
+                          {{/each}}
+                          </script>
+                        </select>
+                        <input id="ipt-dept-name" type="text" name="dept-name" value="您还没有设置任何餐桌" disabled autofocus="autofocus">
+                        </div>
+                        <div class="item-after"><a href="#" id="btn-dept-edit" class="button">编辑</a></div>
+                        <div class="item-after"><a href="#" id="btn-dept-add" class="button">新增</a></div>
+                        <div class="item-after"><a href="#" id="btn-dept-cancel" class="button">取消</a></div>
+                        <div class="item-after"><a href="#" id="btn-dept-confirm" class="button">确认</a></div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+            </div>          
+          </div>
+        </li>
+        <li class="accordion-item">
+          <a href="#" class="item-content item-link">
+            <div class="item-inner">
+              <div class="item-title item-title-name">生成点餐二维码</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="content-block">
+              <div class="qrcode-area">               
+                <a href="#" id="btn-dept-qrcode"><script type="text/template", id="deptQrCodeTpl"><img id="img-dept-qrcode" src="{{qrCodeCustomer}}" class="small-qrcode" data-url-qrcode="{{qrCodeCustomer}}"></script></a>
+              </div>
+              <div class="intro-area">
+                <p>
+                  使用说明：<br>
+                  1. 按照餐桌生成点餐二维码<br>
+                  2. 长按二维码可分享后打印
+                </p>
+              </div>
+            </div>          
+          </div>
+        </li>
+        <li class="accordion-item">
+          <a href="#" class="item-content item-link">
+            <div class="item-inner">
+              <div class="item-title item-title-name">邀请同事成为管理员</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="content-block">
+              <div class="qrcode-area">             
+                <a href="#" id="btn-hosp-qrcode"><script type="text/template", id="deptQrCodeHospTpl"><img id="img-hosp-qrcode" src="{{qrCodeRestaurant}}" class="small-qrcode" data-url-qrcode="{{qrCodeRestaurant}}"></script></a>
+              </div>
+              <div class="intro-area">
+                <p>
+                  使用说明：<br>
+                  1. 打开微信扫描二维码<br>
+                  2. 关注公众号直接成为管理员
+                </p>
+              </div>
+            </div>
+            <div class="manager-list">
+            <script type="text/template", id="managerListTpl">
+              <table>
+                <tr>
+                  <th>微信昵称</th>
+                  <th>真实姓名</th>
+                  <th>操作</th>
+                </tr>
+                {{#each managers}}
+                <tr>
+                  <td>{{nickName}}</td>
+                  <td><input id="ipt-remark-{{openId}}" class="ipt-remark" type="text" value="{{remarkName}}" disabled autofocus="autofocus"></td>
+                  <td>
+                    <div class="buttons-row btns-op">
+                      <a href="#" id="unbind-{{openId}}" class="button btn-unbind" {{#js_compare 'this.allowEdit==0'}}style="display: none"{{/js_compare}} data-id="{{openId}}" data-nick-name="{{nickName}}">解绑</a>
+                      <a href="#" id="remark-{{openId}}" class="button btn-remark" {{#js_compare 'this.allowEdit==0'}}style="display: none"{{/js_compare}} data-id="{{openId}}" data-nick-name="{{nickName}}">备注</a>
+                      <a href="#" id="remark-cancel-{{openId}}" class="button btn-remark-cancel" data-id="{{openId}}" data-remark-name="{{remarkName}}" data-nick-name="{{nickName}}">取消</a>
+                      <a href="#" id="remark-confirm-{{openId}}" class="button btn-remark-confirm" data-id="{{openId}}" data-nick-name="{{nickName}}">确认</a>
+                    </div>
+                  </td>
+                </tr>
+                {{/each}}
+              </table>
+            </script>
+            </div>       
+          </div>
+        </li>
+        <li class="accordion-item">
+          <a href="#" class="item-content item-link">
+            <div class="item-inner">
+              <div class="item-title item-title-name">推荐给其他餐馆</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="content-block">
+              <div class="qrcode-area">
+                <a href="#" id="btn-xiaobudian-qrcode">
+                <script type="text/template" id="hospQrCodeTpl">
+                <img id="img-xiaobudian-qrcode" src="{{restaurantQrCode}}" class="small-qrcode" data-url-qrcode="{{restaurantQrCode}}">
+                </script>
+                </a>
+              </div>
+              <div class="intro-area">
+                <p>
+                  使用说明：<br>
+                  1. 分享二维码给其他餐馆<br>
+                  2. 分享成功有大礼哦！
+                </p>
+              </div>
+            </div>            
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="qrcode-overlay"></div>
+  </div>
+</div>  

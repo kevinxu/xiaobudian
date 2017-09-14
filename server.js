@@ -15,6 +15,9 @@ const expressWinston = require('express-winston');
 const winstonInstance = require('./logger');
 const wechatHospital = require('./controllers/wechat-hospital.controller');
 const wechatPatient = require('./controllers/wechat-patient.controller');
+const wechatRestaurant = require('./controllers/wechat-restaurant.controller');
+const qiniuController = require('./controllers/qiniu.controller');
+const wechatCustomer = require('./controllers/wechat-customer.controller');
 
 mongoose.Promise = global.Promise;
 // 路由
@@ -28,7 +31,7 @@ const isProd = env === 'production' ? true : false;
 const config = isProd ? require('./config.prod.json')
                       : require('./config.json');
 
-mongoose.connect(`mongodb://${config.dbIp}:${config.dbPort}/xiaobudian`)
+mongoose.connect(`mongodb://${config.dbIp}:${config.dbPort}/xiaobudian`, {useMongoClient:true})
   .then(() => { console.log('successfully connect to database.'); })
   .catch((err) => { console.error(err) });
 
@@ -86,8 +89,17 @@ app.use(expressWinston.errorLogger({
   winstonInstance
 }));
 
-wechatHospital.init();
-wechatPatient.init();
+if (config.mode == 1) {
+  // restaurant mode
+  wechatRestaurant.init();
+  qiniuController.init();
+  wechatCustomer.init();
+}
+else if (config.mode == 0) {
+  // hospital mode
+  wechatHospital.init();
+  wechatPatient.init();  
+}
 
 app.listen(config.port, '0.0.0.0', () => {
   console.log(`🌎  => Server is running on port ${config.port}`);
