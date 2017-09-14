@@ -27,6 +27,7 @@ define([
     RESTAURANT_SETTING: 'restaurant/setting.html',
     RESTAURANT_NO_SETTING: 'restaurant/no-setting.html',
     RESTAURANT_MENU_SETTING: 'restaurant/menu-setting.html',
+    RESTAURANT_ORDER: 'restaurant/order.html',
 
     // 餐馆客户端
     CUSTOMER_ONLINE_ORDER: 'customer/online-order.html',
@@ -58,6 +59,7 @@ define([
     restaurantNoSetting: 'restaurant/no-setting',
     restaurantTransferManager: 'restaurant/transfer-manager',
     restaurantMenuSetting: 'restaurant/menu-setting',
+    restaurantOrder: 'restaurant/order',
 
     // 餐馆客户端
     customerOnlineOrder: 'customer/online-order',

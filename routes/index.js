@@ -341,6 +341,59 @@ router.get('/restaurantMenuSetting', (req, res) => {
   });
 });
 
+router.get('/restaurantOrder', (req, res) => {
+  console.log('---------------------------restaurantOrder');
+  const originPath = req.query.originPath || '';
+  var ua = req.get('User-Agent');
+
+  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
+    console.log("It's PC debug mode.");
+    res.render('index', {
+      title: '订单管理',
+      entry: 'restaurant_order',
+      openId: config.pcDebug.debugManagerOpenId,
+      restaurantId: config.pcDebug.debugRestaurantId,
+      hospitalId: '',
+      departmentId: '',
+      originPath: originPath
+    });
+    return;
+  }
+
+  wechatRestaurantController.getAccessUserOpenId(req.query.code)
+    .then(ret => {
+      console.log("access user openid is: " + ret);
+
+      restaurantController.isManagerExist(ret)
+        .then(mgr => {
+          if (mgr && mgr.restaurantId && (mgr.disabled == 0)) {
+            console.log("The manager exists: " + mgr);
+            res.render('index', {
+              title: '订单管理',
+              entry: 'restaurant_order',
+              openId: ret,
+              restaurantId: mgr.restaurantId,
+              hospitalId: '',
+              restaurantId: '',
+              departmentId: '',
+              originPath: originPath
+            });
+          }
+          else {
+           res.render('index', {
+            title: '小不点云点餐',
+            entry: 'restaurant_no_setting',
+            openId: ret,
+            hospitalId: '',
+            restaurantId: '',
+            departmentId: '',
+            originPath: originPath
+            });
+          }
+        });
+  });
+});
+
 // -------------患者端--------------
 
 router.get('/patientOnlineOrder', (req, res) => {

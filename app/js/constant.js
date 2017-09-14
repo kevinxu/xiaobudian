@@ -20,6 +20,7 @@ define([], function () {
     restaurantNoSetting: '小不点云点餐',
     restaurantApply: '小不点云点餐',
     restaurantMenuSetting: '菜单设置',
+    restaurantOrder: '订单管理',
     customerOnlineOrder: '在线点餐',
     customerConfirmOrder: '订单确认',
     customerNoSetting: '小不点云点餐',

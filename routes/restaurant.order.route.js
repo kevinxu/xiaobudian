@@ -48,13 +48,9 @@ const paramSchema = {
   }
 };
 
-// {METHOD} /api/orders
-router.route('/')
-  .get(orderController.listOrders);
-
 // {METHOD} /api/orders/getOrders
 router.route('/getOrders')
-  .get(orderController.listOrdersByUserId);
+  .get(orderController.listOrders);
 
 // {METHOD} /api/orders/create
 router.route('/create')

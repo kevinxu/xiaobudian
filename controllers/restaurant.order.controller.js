@@ -4,6 +4,7 @@ const Orders = require('../models/restaurant.order.model');
 const Customer = require('../models/customer.model');
 const Restaurant = require('../models/restaurant.model');
 const wechatCustomer = require('./wechat-customer.controller');
+const ERR_CODE = require('./constant');
 
 // 环境变量
 const env = process.env.NODE_ENV || 'development';
@@ -57,31 +58,63 @@ function create(req, res, next) {
     }
   }
 
-  var status = 1;
-  const order = new Orders({
-    openId,
-    restaurantId,
-    deskId,
-    customerName,
-    customerMobile,
-    customerAddr,
-    totalFee,
-    status,
-    dishes
-  });
+  Restaurant.get({'_id': restaurantId})
+    .then(rest => {
+      if (rest) {
+        var deskName;
+        var restaurantName = rest.restaurantName;
 
-  console.log("create here.");
+        for (var i = 0, len = rest.desks.length; i < len; i++) {
+          if (deskId == rest.desks[i]._id) {
+            deskName = rest.desks[i].name;
+            break;
+          }
+        }
 
-  order.save()
-    .then(ret => {
-        console.log("create order: " + JSON.stringify(ret));
-        res.json({
-          success: true,
-          data: ret
+        if (i == len) {
+          res.json({
+            success: false,
+            errMsg: "deskId不存在！",
+            errCode: ERR_CODE.INVALID_PARAMETERS
+          });
+          return;      
+        }
+
+        var status = 1;
+        const order = new Orders({
+          openId,
+          restaurantId,
+          restaurantName,
+          deskId,
+          deskName,
+          customerName,
+          customerMobile,
+          customerAddr,
+          totalFee,
+          status,
+          dishes
         });
-    })
-    .catch(e => next(e));
 
+        console.log("create here.");
+
+        order.save()
+          .then(ret => {
+              console.log("create order: " + JSON.stringify(ret));
+              res.json({
+                success: true,
+                data: ret
+              });
+          })
+          .catch(e => next(e));
+      }
+      else {
+          res.json({
+            success: false,
+            errMsg: "餐馆不存在！",
+            errCode: ERR_CODE.RESTAURANT_NOT_EXIST
+          });        
+      }
+    });
 }
 
 function remove(req, res, next) {
@@ -109,37 +142,20 @@ function findOne(req, res) {
 }
 
 function listOrders(req, res, next) {
-  const { hospitalId, deptId, orderDate, orderTime, date, type = 2, size = 10, page = 1 } = req.query;
+  const { openId, restaurantId, pageSize, pageNum } = req.query;
 
-  console.log("listOrders, hospitalId: " + hospitalId + " deptId: " + deptId + " orderDate: " + orderDate + " orderTime: " + orderTime);
-
-  Orders.list({
-    'hospitalId': hospitalId,
-    'departmentId': deptId,
-    'orderDate': orderDate,
-    'orderMealType': orderTime
-  })
-    .then(orders => {
-        console.log(orders);
-        res.json({
-          success: true,
-          page: { current: 1, total: orders.length },
-          data: orders
-        });
-    })
-    .catch(e => next(e));
-}
-
-function listOrdersByUserId(req, res, next) {
-  const { openId, pageSize, pageNum } = req.query;
-
-  console.log("listOrdersByUserId, openId: " + openId + " pageSize: " + pageSize + " pageNum: " + pageNum);
+  console.log("listOrders, openId: " + openId + " restaurantId: " + restaurantId + " pageSize: " + pageSize + " pageNum: " + pageNum);
+  var filter = {};
+  if (openId) {
+    filter.openId = openId;
+  }
+  if (restaurantId) {
+    filter.restaurantId = restaurantId;
+  }
   var limit = parseInt(pageSize);
   var skip = limit * parseInt(pageNum);
 
-  Orders.list({
-    'openId': openId
-  }, {'createdTime': -1}, skip, limit).then(orders => {
+  Orders.list(filter, {'createdTime': -1}, skip, limit).then(orders => {
         console.log(orders);
         var data = [];
 
@@ -149,7 +165,8 @@ function listOrdersByUserId(req, res, next) {
             'orderDate': orders[i].createdTime,
             'status': orders[i].status,
             'totalFee': orders[i].totalFee,
-            'dishes': orders[i].dishes
+            'dishes': orders[i].dishes,
+            'deskName': orders[i].deskName
           });
         }
 
@@ -186,42 +203,8 @@ function confirmOrder(req, res, next) {
   Orders.updateOne(orderId, data)
     .then(ret => {
         res.json({
-          success: true,
-          data: ret
-        });
-
-        Orders.get({'_id': orderId})
-          .then(order => {
-            var msg = {
-              'type': "confirm",
-              'order': order
-            };
-              
-            Hospital.get({'_id': order.hospitalId})
-            .then(hosp => {
-              if (hosp) {
-                console.log(hosp);
-                var i = 0;
-                var len = hosp.departments.length;
-                for (i = 0; i < len; i++) {
-                  if (order.departmentId == hosp.departments[i]._id) {
-                    break;
-                  }
-                }
-
-                if (i == len) {
-                  res.json({
-                    success: false,
-                    errMsg: "此科室病区不存在！"
-                  });
-                  return;
-                }
-
-                msg.order.departmentName = hosp.departments[i].name;
-                wechatPatient.sendMessage(order.openId, msg);
-              }           
-          });
-        });      
+          success: true
+        });     
     })
     .catch(e => next(e));  
 }
@@ -236,8 +219,7 @@ function cancelOrder(req, res, next) {
   Orders.updateOne(orderId, data)
     .then(order => {
         res.json({
-          success: true,
-          data: order
+          success: true
         });
 
         Orders.get({'_id': orderId})
@@ -246,31 +228,8 @@ function cancelOrder(req, res, next) {
               'type': "cancel",
               'order': order
             };
-              
-            Hospital.get({'_id': order.hospitalId})
-            .then(hosp => {
-              if (hosp) {
-                console.log(hosp);
-                var i = 0;
-                var len = hosp.departments.length;
-                for (i = 0; i < len; i++) {
-                  if (order.departmentId == hosp.departments[i]._id) {
-                    break;
-                  }
-                }
 
-                if (i == len) {
-                  res.json({
-                    success: false,
-                    errMsg: "此科室病区不存在！"
-                  });
-                  return;
-                }
-
-                msg.order.departmentName = hosp.departments[i].name;
-                wechatPatient.sendMessage(order.openId, msg);
-              }           
-          });
+            wechatCustomer.sendMessage(order.openId, msg);
         }); 
     })
     .catch(e => next(e)); 
@@ -299,5 +258,5 @@ function getCancelReason(req, res, next) {
 }
 
 module.exports = {
-  create, remove, load, findOne, listOrders, listOrdersByUserId, revokeOrder, confirmOrder, cancelOrder, getCancelReason,
+  create, remove, load, findOne, listOrders, revokeOrder, confirmOrder, cancelOrder, getCancelReason,
 };

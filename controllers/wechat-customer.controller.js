@@ -298,31 +298,18 @@ function getAccessUserOpenId(code) {
 
 function sendMessage(openId, msg) {
   var time = new Date();
-  var meal = "早餐";
-  if (msg.order.orderMealType == "breakfast") {
-    meal = "早餐";
-  }
-  else if (msg.order.orderMealType == "lunch") {
-    meal = "午餐";
-  }
-  else if (msg.order.orderMealType == "dinner") {
-    meal = "晚餐";
-  }
-  else {
-    console.log("invalid meal type: " + msg.order.orderMealType);
-  }
 
   if (msg.type == "confirm") {
     console.log("send confirm msg");
-    var url = config.wechatMenuPatient[1].url;
+    var url = config.wechatMenuCustomer[1].url;
 
     var data = {
       'first': {
-        'value': "您预订的" + msg.order.orderDate + meal + "已确认，预计送达时间" + msg.order.orderTimeTips.shippingStart,
+        'value': "您的订单已确认，我们尽快安排送餐，谢谢您的耐心等候！",
         'color': "#173177"
       },
-      'department': {
-        'value': msg.order.departmentName,
+      'restaurant': {
+        'value': msg.order.restaurantName,
         'color': "#173177"
       },
       'time': {
@@ -341,11 +328,11 @@ function sendMessage(openId, msg) {
 
     var data = {
       'first': {
-        'value': "您预订的" + msg.order.orderDate + meal + "被退订！",
+        'value': "您的订单被退订！",
         'color': "#ff0000"
       },
-      'department': {
-        'value': msg.order.departmentName,
+      'restaurant': {
+        'value': msg.order.restaurantName,
         'color': "#173177"
       },
       'time': {

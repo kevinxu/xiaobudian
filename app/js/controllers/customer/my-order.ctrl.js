@@ -98,7 +98,7 @@ define([
             html += '已确认';
           }
           else if (orders[i].status == 3) {
-            html += '已退订<br><a id="btn-' + orders[i].orderId + '" href="#"' + ' class="button btn-edit-order" data-order-id="' + orders[i].orderId + '">理由</a>';
+            html += '已退订<br><a id="btn-' + orders[i].orderId + '" href="#"' + ' class="button btn-view-reason" data-order-id="' + orders[i].orderId + '">理由</a>';
           }
           else if (orders[i].status == 4) {
             html += '已撤销';
