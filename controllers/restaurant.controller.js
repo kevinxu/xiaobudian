@@ -42,20 +42,33 @@ function create(req, res, next) {
           .then(newRestaurant => {
               var restaurantId = newRestaurant._id;
 
-              // 管理员进来的入口有：
-              // 1. 通过餐馆的邀请二维码，直接扫描关注公众号后成为相应餐馆的管理员；
-              // 2. 通过搜索公众号关注，如果此微信号是一个新的关注者，会走餐馆开通流程；
-              // 3. 通过邀请渠道二维码，如果此微信号是一个新的关注者，会走餐馆开通流程；
-              // 管理员都是在用户扫码关注的时候创建的，这里只要更新对应信息即可；
-              Managers.updateOne(openId, {
-                superManager: 1,
-                disabled: 0,
-                restaurantId: restaurantId
-              }).then(mgr => {
-                res.json({
-                  success: true,
-                  data: newRestaurant
-                });
+              Managers.get({'openId': openId}).then (mgr => {
+                if (mgr) {
+                  // 管理员进来的入口有：
+                  // 1. 通过餐馆的邀请二维码，直接扫描关注公众号后成为相应餐馆的管理员；
+                  // 2. 通过搜索公众号关注，如果此微信号是一个新的关注者，会走餐馆开通流程；
+                  // 3. 通过邀请渠道二维码，如果此微信号是一个新的关注者，会走餐馆开通流程；
+                  // 管理员都是在用户扫码关注的时候创建的，这里只要更新对应信息即可；
+                  Managers.updateOne(openId, {
+                    superManager: 1,
+                    disabled: 0,
+                    restaurantId: restaurantId
+                  }).then(mgr => {
+                    res.json({
+                      success: true,
+                      data: newRestaurant
+                    });
+                  })
+                  .catch(e => next(e));
+                }
+                else {
+                  // Manager doens't exist, create a new one.
+                  wechatRestaurant.createManager(openId, restaurantId, 1);
+                  res.json({
+                    success: true,
+                    data: {'_id': newRestaurant._id}
+                  });
+                }
               })
               .catch(e => next(e));
           })

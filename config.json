@@ -4,10 +4,10 @@
   "domain": "http://xiaobu.hk1.mofasuidao.cn",
   "port": "3005",
   "logTopic": "is_test_action",
-  "dbIp": "172.16.110.81",
+  "dbIp": "192.168.0.106",
   "dbPort": "27017",
   "redis": {
-    "host": "172.16.110.81",
+    "host": "192.168.0.106",
     "port": "6379"
   },
   "pcDebug": {

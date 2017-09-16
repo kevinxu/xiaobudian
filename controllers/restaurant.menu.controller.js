@@ -16,7 +16,11 @@ const config = isProd ? require('../config.prod')
 function create(req, res, next) {
   var restaurantId = req.params.restaurantId;
   const { openId, dishTypeId, dishType, dishName, price } = req.body;
-  var photo = config.qiniu.domain + req.body.photo;
+  var photo;
+
+  if (req.body.photo) {
+    photo = config.qiniu.domain + req.body.photo;
+  }
 
   const menu = new Menu({
     restaurantId,
@@ -192,7 +196,7 @@ function editDish(req, res, next) {
   if (req.body.photo) {
     photo = config.qiniu.domain + req.body.photo;
   }
-  
+
   var data = {
     'openId': openId,
     'dishName': dishName,

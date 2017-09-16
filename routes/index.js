@@ -202,6 +202,163 @@ router.get('/hospitalSetting', (req, res) => {
   });
 });
 
+// -------------患者端--------------
+
+router.get('/patientOnlineOrder', (req, res) => {
+  console.log('---------------------------patientOnlineOrder');
+  const originPath = req.query.originPath || '';
+  var ua = req.get('User-Agent');
+
+  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
+    console.log("It's PC debug mode.");
+    res.render('index', {
+      title: '食堂点餐',
+      entry: 'patient_order',
+      openId: config.pcDebug.debugPatientOpenId,
+      hospitalId: config.pcDebug.debugHospitalId,
+      restaurantId: '',
+      departmentId: config.pcDebug.debugDeptId,
+      originPath: originPath
+    });
+    return;
+  }
+
+  wechatPatientController.getAccessUserOpenId(req.query.code)
+    .then(ret => {
+      console.log("access user openid is: " + ret);
+
+      patientController.isPatientExist(ret)
+        .then(p => {
+          if (p && p.hospitalId) {
+            console.log("The patient exists: " + p);
+            res.render('index', {
+              title: '食堂点餐',
+              entry: 'patient_order',
+              openId: ret,
+              hospitalId: p.hospitalId,
+              restaurantId: '',
+              departmentId: p.departmentId,
+              originPath: originPath
+            });
+          }
+          else {
+           res.render('index', {
+            title: '小不点云点餐',
+            entry: 'patient_no_setting',
+            openId: ret,
+            hospitalId: '',
+            restaurantId: '',
+            departmentId: '',
+            originPath: originPath
+            });
+          }
+        });
+  });
+});
+
+router.get('/patientMyOrder', (req, res) => {
+  console.log('---------------------------patientMyOrder query: ' + JSON.stringify(req.query));
+  const originPath = req.query.originPath || '';
+  var ua = req.get('User-Agent');
+
+  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
+    console.log("It's PC debug mode.");
+    res.render('index', {
+      title: '我的订单',
+      entry: 'patient_my_order',
+      openId: config.pcDebug.debugPatientOpenId,
+      hospitalId: config.pcDebug.debugHospitalId,
+      restaurantId: '',
+      departmentId: config.pcDebug.debugDeptId,
+      originPath: originPath
+    });
+    return;
+  }
+
+  wechatPatientController.getAccessUserOpenId(req.query.code)
+    .then(ret => {
+      console.log("access user openid is: " + ret);
+
+      patientController.isPatientExist(ret)
+        .then(p => {
+          if (p && p.hospitalId) {
+            console.log("The patient exists: " + p);
+            res.render('index', {
+              title: '我的订单',
+              entry: 'patient_my_order',
+              openId: ret,
+              hospitalId: p.hospitalId,
+              restaurantId: '',
+              departmentId: p.departmentId,
+              originPath: originPath
+            });
+          }
+          else {
+           res.render('index', {
+            title: '小不点云点餐',
+            entry: 'patient_no_setting',
+            openId: ret,
+            hospitalId: '',
+            restaurantId: '',
+            departmentId: '',
+            originPath: originPath
+            });
+          }
+        });
+  });
+});
+router.get('/patientReadme', (req, res) => {
+  console.log('---------------------------patientReadme');
+  const originPath = req.query.originPath || '';
+  var ua = req.get('User-Agent');
+
+  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
+    console.log("It's PC debug mode.");
+    res.render('index', {
+      title: '点餐须知',
+      entry: 'patient_read_me',
+      openId: config.pcDebug.debugPatientOpenId,
+      hospitalId: config.pcDebug.debugHospitalId,
+      restaurantId: '',
+      departmentId: config.pcDebug.debugDeptId,
+      originPath: originPath
+    });
+    return;
+  }
+
+  wechatPatientController.getAccessUserOpenId(req.query.code)
+    .then(ret => {
+      console.log("access user openid is: " + ret);
+
+      patientController.isPatientExist(ret)
+        .then(p => {
+          if (p && p.hospitalId) {
+            console.log("The patient exists: " + p);
+            res.render('index', {
+              title: '点餐须知',
+              entry: 'patient_read_me',
+              openId: ret,
+              hospitalId: p.hospitalId,
+              restaurantId: '',
+              departmentId: p.departmentId,
+              originPath: originPath
+            });
+          }
+          else {
+           res.render('index', {
+            title: '小不点云点餐',
+            entry: 'patient_no_setting',
+            openId: ret,
+            hospitalId: '',
+            restaurantId: '',
+            departmentId: '',
+            originPath: originPath
+            });
+          }
+        });
+  });
+});
+
 
 // -------------餐馆端--------------
 router.get('/restaurantSetting', (req, res) => {
@@ -393,164 +550,6 @@ router.get('/restaurantOrder', (req, res) => {
         });
   });
 });
-
-// -------------患者端--------------
-
-router.get('/patientOnlineOrder', (req, res) => {
-  console.log('---------------------------patientOnlineOrder');
-  const originPath = req.query.originPath || '';
-  var ua = req.get('User-Agent');
-
-  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
-    console.log("It's PC debug mode.");
-    res.render('index', {
-      title: '食堂点餐',
-      entry: 'patient_order',
-      openId: config.pcDebug.debugPatientOpenId,
-      hospitalId: config.pcDebug.debugHospitalId,
-      restaurantId: '',
-      departmentId: config.pcDebug.debugDeptId,
-      originPath: originPath
-    });
-    return;
-  }
-
-  wechatPatientController.getAccessUserOpenId(req.query.code)
-    .then(ret => {
-      console.log("access user openid is: " + ret);
-
-      patientController.isPatientExist(ret)
-        .then(p => {
-          if (p && p.hospitalId) {
-            console.log("The patient exists: " + p);
-            res.render('index', {
-              title: '食堂点餐',
-              entry: 'patient_order',
-              openId: ret,
-              hospitalId: p.hospitalId,
-              restaurantId: '',
-              departmentId: p.departmentId,
-              originPath: originPath
-            });
-          }
-          else {
-           res.render('index', {
-            title: '小不点云点餐',
-            entry: 'patient_no_setting',
-            openId: ret,
-            hospitalId: '',
-            restaurantId: '',
-            departmentId: '',
-            originPath: originPath
-            });
-          }
-        });
-  });
-});
-
-router.get('/patientMyOrder', (req, res) => {
-  console.log('---------------------------patientMyOrder query: ' + JSON.stringify(req.query));
-  const originPath = req.query.originPath || '';
-  var ua = req.get('User-Agent');
-
-  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
-    console.log("It's PC debug mode.");
-    res.render('index', {
-      title: '我的订单',
-      entry: 'patient_my_order',
-      openId: config.pcDebug.debugPatientOpenId,
-      hospitalId: config.pcDebug.debugHospitalId,
-      restaurantId: '',
-      departmentId: config.pcDebug.debugDeptId,
-      originPath: originPath
-    });
-    return;
-  }
-
-  wechatPatientController.getAccessUserOpenId(req.query.code)
-    .then(ret => {
-      console.log("access user openid is: " + ret);
-
-      patientController.isPatientExist(ret)
-        .then(p => {
-          if (p && p.hospitalId) {
-            console.log("The patient exists: " + p);
-            res.render('index', {
-              title: '我的订单',
-              entry: 'patient_my_order',
-              openId: ret,
-              hospitalId: p.hospitalId,
-              restaurantId: '',
-              departmentId: p.departmentId,
-              originPath: originPath
-            });
-          }
-          else {
-           res.render('index', {
-            title: '小不点云点餐',
-            entry: 'patient_no_setting',
-            openId: ret,
-            hospitalId: '',
-            restaurantId: '',
-            departmentId: '',
-            originPath: originPath
-            });
-          }
-        });
-  });
-});
-router.get('/patientReadme', (req, res) => {
-  console.log('---------------------------patientReadme');
-  const originPath = req.query.originPath || '';
-  var ua = req.get('User-Agent');
-
-  if (config.pcDebug.debug == 1 && !accessFromWechat(ua)) {
-    console.log("It's PC debug mode.");
-    res.render('index', {
-      title: '点餐须知',
-      entry: 'patient_read_me',
-      openId: config.pcDebug.debugPatientOpenId,
-      hospitalId: config.pcDebug.debugHospitalId,
-      restaurantId: '',
-      departmentId: config.pcDebug.debugDeptId,
-      originPath: originPath
-    });
-    return;
-  }
-
-  wechatPatientController.getAccessUserOpenId(req.query.code)
-    .then(ret => {
-      console.log("access user openid is: " + ret);
-
-      patientController.isPatientExist(ret)
-        .then(p => {
-          if (p && p.hospitalId) {
-            console.log("The patient exists: " + p);
-            res.render('index', {
-              title: '点餐须知',
-              entry: 'patient_read_me',
-              openId: ret,
-              hospitalId: p.hospitalId,
-              restaurantId: '',
-              departmentId: p.departmentId,
-              originPath: originPath
-            });
-          }
-          else {
-           res.render('index', {
-            title: '小不点云点餐',
-            entry: 'patient_no_setting',
-            openId: ret,
-            hospitalId: '',
-            restaurantId: '',
-            departmentId: '',
-            originPath: originPath
-            });
-          }
-        });
-  });
-});
-
 
 // -------------餐馆客户端--------------
 

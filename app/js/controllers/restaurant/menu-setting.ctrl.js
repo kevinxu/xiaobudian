@@ -387,10 +387,6 @@ function sendFile(fileData) {
           console.log(res.data);
           var menus = [];
 
-          if (res.data.length == 0) {
-
-            return;
-          }
 
           for (var i = 0, len = res.data.length; i < len; i++) {
             for (var j = 0; j < dishes.length; j++) {

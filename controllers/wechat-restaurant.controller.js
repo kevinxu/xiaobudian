@@ -92,7 +92,7 @@ var EventFunction = {
   VIEW: eventView
 };
 
-function handleManager(openId, eventKey, res) {
+function handleManager(openId, eventKey, res, restId, isSupperMgr) {
 
   WechatCommon.getUserInfo(wechatAccessToken, openId).then(result => {
     var nickName = result.nickname;
@@ -167,8 +167,10 @@ function handleManager(openId, eventKey, res) {
             // 从医院二维码进来
             if (mgr.restaurantId == restaurantId && mgr.disabled == 0) {
               // 扫码同一个医院二维码
-              strReply = "欢迎回来！";
-              res.reply(strReply);
+              if (res) {
+                strReply = "欢迎回来！";
+                res.reply(strReply);
+              }
             }
             else {
               // 切换医院
@@ -177,9 +179,11 @@ function handleManager(openId, eventKey, res) {
                   console.log("get restaurant with id: " + restaurantId);
                   console.log(rest);
                   var restaurantName = rest.restaurantName;
-                  strReply = "恭喜您成为" + restaurantName + "点餐管理员！" +
-                          "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-                  res.reply(strReply);
+                  if (res) {
+                    strReply = "恭喜您成为" + restaurantName + "点餐管理员！" +
+                            "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+                    res.reply(strReply);
+                  }
               });
 
               data.disabled = 0;
@@ -190,8 +194,10 @@ function handleManager(openId, eventKey, res) {
           }
           else {
             // 从其他渠道进来
-            strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-            res.reply(strReply);
+            if (res) {
+              strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+              res.reply(strReply);             
+            }
           }
 
           if (departmentId) {
@@ -213,23 +219,36 @@ function handleManager(openId, eventKey, res) {
           if(restaurantId) {
               Restaurant.get({'_id': restaurantId})
                 .then(rest => {
-                  console.log("get hospital with id: " + restaurantId);
+                  console.log("get restaurant with id: " + restaurantId);
                   console.log(rest);
                   var restaurantName = rest.restaurantName;
-                  strReply = "恭喜您成为" + restaurantName + "点餐管理员！" +
-                          "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-                  res.reply(strReply);
+                  if (res) {
+                    strReply = "恭喜您成为" + restaurantName + "点餐管理员！" +
+                            "三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+                    res.reply(strReply);                   
+                  }
               });           
           }
           else {
             // 从其他渠道进来
-            strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
-            res.reply(strReply);
+            if (res) {
+              strReply = "欢迎免费使用！三分钟学会操作，请点击<a href='http://www.baidu.com'>《新手帮助》</a>";
+              res.reply(strReply);
+            }
+          }
+
+          if (restId) {
+            restaurantId = restId;
+          }
+          if (isSupperMgr) {
+            superManager = 1;
+            disabled = 0;
           }
 
           const manager = new Managers({
             openId,
             restaurantId,
+            superManager,
             departmentId,
             nickName,
             subscribeStatus,
@@ -239,6 +258,7 @@ function handleManager(openId, eventKey, res) {
             country,
             headImgUrl,
             remark,
+            disabled,
             recommendHospitalId,
             recommendOpenId
           });
@@ -344,6 +364,10 @@ function init() {
   wechatApi = WechatCommon.createApiInstance(config.wechatRestaurant.appId, config.wechatRestaurant.appSecret);
 }
 
+function createManager(openId, restaurantId, isSupperMgr) {
+  handleManager(openId, null, null, restaurantId, isSupperMgr);
+}
+
 module.exports = {
-  init, getDeptQrCode, all, getAccessUserOpenId, getRestaurantQrCode, sendMessage,
+  init, getDeptQrCode, all, getAccessUserOpenId, getRestaurantQrCode, sendMessage, createManager,
 };
