@@ -4,7 +4,7 @@ define([], function () {
   var CONSTANT_VALUE = {
 
     // page title
-    onlineOrder: '食堂点餐',
+    onlineOrder: '在线点餐',
     confirmOrder: '订单确认',
     myOrder: '我的订单',
     noSetting: '小不点云点餐',

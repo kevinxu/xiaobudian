@@ -234,6 +234,7 @@ function addDesk(req, res, next) {
 
   Restaurant.get({'_id': restaurantId})
     .then(rest => {
+      if (rest) {
         console.log(rest);
         var deskList = rest.desks;
         var i;
@@ -308,7 +309,15 @@ function addDesk(req, res, next) {
                   }          
                 });
           })
-          .catch(e => next(e));        
+          .catch(e => next(e)); 
+      }
+      else {
+          res.json({
+            success: false,
+            errMsg: "餐桌ID不存在！",
+            errCode: ERR_CODE.INVALID_PARAMETERS
+          });
+      }       
     })
     .catch(e => next(e));
 }

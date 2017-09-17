@@ -46,7 +46,7 @@ function refreshToken() {
   saveToken();
   setInterval(function() {
     saveToken();
-  }, 7000*1000);
+  }, 3000*1000);
 }
 
 function init() {

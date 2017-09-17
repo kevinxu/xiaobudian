@@ -716,11 +716,11 @@ define([
 
     var i;
     var len;
-    for (i = 0, len = deptList.length; i < len; i++) {
-      if (selectedDept == deptList[i].name) {
+    for (i = 0, len = deskList.length; i < len; i++) {
+      if (selectedDept == deskList[i].name) {
         selectedDeptIndex = i;
-        Template.render('#deptQrCodeTpl', deptList[i]);
-        Template.render('#deptQrCodeHospTpl', deptList[i]);
+        Template.render('#deptQrCodeTpl', deskList[i]);
+        Template.render('#deptQrCodeHospTpl', deskList[i]);
         break;
       }
     }

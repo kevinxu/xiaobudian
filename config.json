@@ -12,11 +12,11 @@
   },
   "pcDebug": {
     "debug": 1,
-    "debugManagerOpenId": "oTt421T8p_6QfzTV0n5VJ1cWwQ1Y",
+    "debugManagerOpenId": "oTt421TWJGSGXPfGe01zMUR2aSUU",
     "debugPatientOpenId": "oIj_Y024I_w7uJnkuGo7kGcwJ4LM",
     "debugCustomerOpenId": "oIj_Y09qM_-ysRFhlQMJuIMydt2I",
     "debugHospitalId": "5979b0a81a68db1ef87209a7",
-    "debugRestaurantId": "599266111f7c743b80cbfc67",
+    "debugRestaurantId": "59bdb3850737c85edc465f58",
     "debugDeptId": "5979b0ed1a68db1ef87209aa"
   },
   "qiniu": {
