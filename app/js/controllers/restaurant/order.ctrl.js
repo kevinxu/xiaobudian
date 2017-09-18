@@ -40,6 +40,10 @@ define([
         console.log("restaurant orders pageNum: " + page + " list: " + JSON.stringify(res.data));
         if (res.data.length < pageSize) {
           loadingLast = true;
+          // 加载完毕，则注销无限加载事件，以防不必要的加载
+          f7.detachInfiniteScroll($$('.infinite-scroll'));
+          // 删除加载提示符
+          $$('.infinite-scroll-preloader').remove();
         }
 
         var orders = [];
@@ -53,7 +57,7 @@ define([
         // 生成新条目的HTML
         var html = '';
         for (var i = 0, len = orders.length; i < len; i++) {
-          html += '<tr><td>' + orders[i].orderDate + '<br>' + orders[i].orderTime + '</td><td>';
+          html += '<tr class="btn-view-details" data-order-id="' + orders[i].orderId + '"><td>' + orders[i].orderDate + '<br>' + orders[i].orderTime + '</td><td>';
           html += orders[i].deskName + '</td><td>';
           for (var j = 0, l = orders[i].dishes.length; j < l; j++) {
             html += orders[i].dishes[j].dishName + 'x' + orders[i].dishes[j].count + '<br>';
@@ -92,6 +96,10 @@ define([
           element: '.btn-unsubscribe',
           event: 'click',
           handler: onUnsubscribe
+        }, {
+          element: '.btn-view-details',
+          event: 'click',
+          handler: onViewOrderDetails
         }]);
       }
     });   
@@ -115,19 +123,109 @@ define([
       setTimeout(function () {
         // 重置加载flag
         loading = false;
-     
-        if (loadingLast) {
-          // 加载完毕，则注销无限加载事件，以防不必要的加载
-          f7.detachInfiniteScroll($$('.infinite-scroll'));
-          // 删除加载提示符
-          $$('.infinite-scroll-preloader').remove();
-          return;
-        }
 
         pageNum++;
         loadPage(pageNum);
      
       }, 500);
+    });
+  }
+
+  function onViewOrderDetails() {
+    var orderId = $$(this).data('order-id');
+
+    Service.getOrderDetail(orderId).then(function(res){
+      if (res.success) {
+        console.log("order detail: " + JSON.stringify(res.data));
+        var html;
+
+        if (res.data.orderType == 1) {
+          // 外卖
+          html = '<div class="list-block">'+
+                        '<ul>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">类型：</div>'+
+                                '<div class="item-input">'+
+                                  '<input id="ipt-order-type" type="text" readonly value="外卖"></input>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">姓名：</div>'+
+                                '<div class="item-input">'+
+                                  '<input id="ipt-customer-name" type="text" readonly value="' + res.data.customerName + '"></input>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">电话：</div>'+
+                                '<div class="item-input">'+
+                                  '<input id="ipt-customer-mobile" type="text" readonly value="' + res.data.customerMobile + '"></input>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">地址：</div>'+
+                                '<div class="item-input">'+
+                                  '<textarea id="ipt-customer-addr" type="text" readonly>' + res.data.customerAddr + '</textarea>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                        '</ul>'+
+                      '</div>';
+        }
+        else {
+          // 堂食
+          html = '<div class="list-block">'+
+                        '<ul>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">类型：</div>'+
+                                '<div class="item-input">'+
+                                  '<input id="ipt-order-type" type="text" readonly value="堂食"></input>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                          '<li>'+
+                            '<div class="item-content">'+
+                              '<div class="item-inner">'+
+                                '<div class="item-title label item-name">餐桌：</div>'+
+                                '<div class="item-input">'+
+                                  '<input id="ipt-desk-name" type="text" readonly value="' + res.data.deskName + '"></input>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</li>'+
+                        '</ul>'+
+                      '</div>';
+        }
+
+        var modal = f7.modal({
+          title: '订单详情',
+          //text: '好的?',
+          afterText:  html,
+          buttons: [
+            {
+              text: '确认'
+            },
+          ]
+        });
+  
+      }
     });
   }
 

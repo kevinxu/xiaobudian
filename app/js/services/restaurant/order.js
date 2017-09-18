@@ -9,6 +9,14 @@ define(['services/base'], function (Service) {
       });     
     },
 
+    getOrderDetail: function (orderId) {
+       return Service.getData({
+        method: 'get',
+        url: '/api/orders/getOrderDetail?orderId=' + orderId,
+        data: ''
+      });     
+    },
+
     confirmOrder: function (orderId) {
       var data = {
         op: 2

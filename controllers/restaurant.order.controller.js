@@ -18,7 +18,7 @@ function create(req, res, next) {
 
   const { openId, restaurantId, deskId, 
           customerName, customerMobile, customerAddr, 
-          totalFee } = req.body;
+          orderType, totalFee } = req.body;
   console.log("order create: " + JSON.stringify(req.body));
   var data = {};
 
@@ -86,6 +86,7 @@ function create(req, res, next) {
           restaurantId,
           restaurantName,
           deskId,
+          orderType,
           deskName,
           customerName,
           customerMobile,
@@ -135,10 +136,6 @@ function load(req, res, next, id) {
       return next();
     })
     .catch(e => next(e));
-}
-
-function findOne(req, res) {
-  return res.json({success: true, data: req.catalog});
 }
 
 function listOrders(req, res, next) {
@@ -257,6 +254,29 @@ function getCancelReason(req, res, next) {
     .catch(e => next(e));
 }
 
+function getOrderDetail(req, res, next) {
+  const { orderId } = req.query;
+  console.log("getOrderDetail, orderId: " + orderId);
+
+  Orders.get({'_id': orderId})
+    .then(order => {
+      if (order) {
+        res.json({
+          success: true,
+          data: order
+        });    
+      }
+      else {
+        res.json({
+          success: false,
+          errMsg: "您查找的订单ID不存在！"
+        })
+      }
+    })
+    .catch(e => next(e));  
+}
+
 module.exports = {
-  create, remove, load, findOne, listOrders, revokeOrder, confirmOrder, cancelOrder, getCancelReason,
+  create, remove, load, listOrders, revokeOrder, confirmOrder, cancelOrder, getCancelReason,
+  getOrderDetail,
 };

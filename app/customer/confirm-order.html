@@ -1,17 +1,48 @@
 <div class="page page-customer-confirm-order" data-page="customer-confirm-order">
   <div class="page-content">
   	<div class="wrapper-main-content">
-	  	<div id="txt-prompt" class="accordion-item">
-	  		<a href="#" class="item-content item-link">
-	  			<div class="item-inner">
-	  				<div id="id-more-info" class="item-title item-title-name">
-	  					<span>如需外送，请完善送餐信息</span>
-	  					<img src="img/arrow_down_big.png" width="30" height="30">
-	  				</div>
-
-	  			</div>
-	  		</a>
-	  		<div class="accordion-item-content">
+		<div class="list-block">
+			<ul>
+				<li>
+					<label class="label-radio item-content">
+						<input id="ipt-inroom" type="radio" name="order-type" value="inroom" checked="checked">
+						<div class="item-inner">
+							<div class="item-title">堂食</div>
+						</div>
+					</label>
+				</li>
+				<li>
+					<label class="label-radio item-content">
+						<input id="ipt-outroom" type="radio" name="order-type" value="outroom">
+						<div class="item-inner">
+							<div class="item-title">外卖</div>
+						</div>
+					</label>
+				</li>
+			</ul>
+		</div>
+	  	<div class="tabs">
+	  		<div id="tab-inroom" class="tab active">
+			  	<div class="card">
+			  		<div class="card-content">
+					  	<form id="form-desk-detail" class="list-block">
+					  		<ul>
+					  			<li>
+					  				<div class="item-content">
+					  					<div class="item-inner">
+					  						<div class="item-title label">所在桌号</div>
+					  						<div class="item-input">
+					  							<input id="ipt-desk-name" type="text" name="deskName" readonly placeholder="请输入">
+					  						</div>
+					  					</div>		
+					  				</div>  				
+					  			</li>			
+					  		</ul>
+					  	</form>  			
+			  		</div>
+			  	</div>
+	  		</div>
+	  		<div id="tab-outroom" class="tab">
 	  			<div class="card">
 	  				<div class="card-content">
 					  	<form id="form-customer-detail" class="list-block">
@@ -49,27 +80,10 @@
 					  		</ul>
 					  	</form>	  					
 	  				</div>
-	  			</div>
+	  			</div>	  			
 	  		</div>
 	  	</div>
-	  	<div class="card">
-	  		<div class="card-content">
-			  	<form id="form-customer-detail" class="list-block">
-			  		<ul>
-			  			<li>
-			  				<div class="item-content">
-			  					<div class="item-inner">
-			  						<div class="item-title label">所在桌号</div>
-			  						<div class="item-input">
-			  							<input id="ipt-desk-name" type="text" name="deskName" readonly placeholder="请输入">
-			  						</div>
-			  					</div>		
-			  				</div>  				
-			  			</li>			
-			  		</ul>
-			  	</form>  			
-	  		</div>
-	  	</div>
+
 	  	<div class="content-block-title">您的订单</div>
 	  	<div class="card">
 	  		<div class="card-content">

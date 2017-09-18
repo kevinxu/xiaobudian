@@ -13,6 +13,11 @@ const OrderSchema = new mongoose.Schema({
   restaurantName: {
     type: String
   },
+  // 0 - 堂食； 1 - 外卖
+  orderType: {
+    type: Number,
+    required: true
+  },
   deskId: {
     type: String,
     required: true

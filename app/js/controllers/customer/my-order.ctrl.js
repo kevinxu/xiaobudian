@@ -73,6 +73,10 @@ define([
         console.log("my orders pageNum: " + page + " list: " + JSON.stringify(res.data));
         if (res.data.length < pageSize) {
           loadingLast = true;
+          // 加载完毕，则注销无限加载事件，以防不必要的加载
+          f7.detachInfiniteScroll($$('.infinite-scroll'));
+          // 删除加载提示符
+          $$('.infinite-scroll-preloader').remove();
         }
 
         var orders = [];
@@ -145,14 +149,6 @@ define([
       setTimeout(function () {
         // 重置加载flag
         loading = false;
-     
-        if (loadingLast) {
-          // 加载完毕，则注销无限加载事件，以防不必要的加载
-          f7.detachInfiniteScroll($$('.infinite-scroll'));
-          // 删除加载提示符
-          $$('.infinite-scroll-preloader').remove();
-          return;
-        }
 
         pageNum++;
         loadPage(pageNum);

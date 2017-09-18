@@ -8,6 +8,7 @@ define([
   var restaurantId = window.restaurantId;
   var deskId;
   var orderInCache;
+  var customerInfo;
 
   var Module = {
     init: function (query) {
@@ -23,32 +24,67 @@ define([
       	element: '#btn-confirm-my-order',
       	event: 'click',
       	handler: onConfirmOrder
+      }, {
+        element: '[name="order-type"]',
+        event: 'change',
+        handler: onChangeOrderType
       }];
     }
   };
 
+  function onChangeOrderType() {
+    console.log("onChangeOrderType");
+
+    var isInroomChecked = $$('#ipt-inroom').prop('checked');
+    var isOutroomChecked = $$('#ipt-outroom').prop('checked');
+    console.log("isInroomChecked: " + isInroomChecked + " isOutroomChecked: " + isOutroomChecked);
+
+    if (isInroomChecked) {
+      f7.showTab('#tab-inroom');
+    }
+
+    if (isOutroomChecked) {
+      f7.showTab('#tab-outroom');
+    }
+  }
+
   function onConfirmOrder() {
   	console.log("onConfirmOrder");
 
-  	var name = $$('#ipt-patient-name').val();
-  	var mobile = $$('#ipt-patient-mobile').val();
+    var isInroomChecked = $$('#ipt-inroom').prop('checked');
+    var orderType = isInroomChecked ? 0 : 1;
 
-    if (mobile) {
-      var validator = {
-        tel: /^(13|14|15|18)[0-9]{9}$/
-      };
-      if (!validator.tel.test(mobile)) {
-        f7.alert('请输入正确的手机号码');
+    var name = $$('#ipt-patient-name').val();
+    var mobile = $$('#ipt-patient-mobile').val();
+    var addr = $$('#ipt-customer-addr').val();
+
+    if (orderType == 1) {
+      if (mobile) {
+        var validator = {
+          tel: /^(13|14|15|18)[0-9]{9}$/
+        };
+        if (!validator.tel.test(mobile)) {
+          f7.alert('请输入正确的手机号码');
+          return;
+        }      
+      }
+      else {
+        f7.alert('请输入手机号码');
+        return;        
+      }
+
+      if (!addr) {
+        f7.alert('请输入送餐地址');
         return;
-      }      
+      }
     }
 
-    var addr = $$('#ipt-customer-addr').val();
     var data = {
       'openId': openId,
       'restaurantId': restaurantId,
       'deskId': deskId,
       'totalFee': orderInCache.totalFee,
+      'orderType': orderType,
       'dishes': orderInCache.dishes
     };
 
@@ -86,9 +122,11 @@ define([
     }).then(function(res){
       if (res.success) {
 
-      	f7.formFromJSON('#form-customer-detail', res.data);
+      	f7.formFromJSON('#form-desk-detail', res.data);
+        f7.formFromJSON('#form-customer-detail', res.data);
+        customerInfo = res.data;
         deskId = res.data.deskId;
-        //console.log("deskName: " + JSON.stringify(res.data));
+        console.log("deskName: " + JSON.stringify(res.data));
         $$('#ipt-desk-name').val(res.data.deskName);
       }
   	});

@@ -16,6 +16,7 @@ const paramSchema = {
       customerName: Joi.string(),
       customerMobile: Joi.number(),
       customerAddr: Joi.string(),
+      orderType: Joi.number(),
       totalFee: Joi.number(),
       dishes: [{
         dishId: Joi.string(),
@@ -52,13 +53,16 @@ const paramSchema = {
 router.route('/getOrders')
   .get(orderController.listOrders);
 
+// {METHOD} /api/orders/getOrderDetail
+router.route('/getOrderDetail')
+  .get(orderController.getOrderDetail);
+
 // {METHOD} /api/orders/create
 router.route('/create')
   .post(validate(paramSchema.createOrder), orderController.create);
 
 // {METHOD} /api/orders/:orderId
 router.route('/:orderId')
-  .get(orderController.findOne)
   .delete(orderController.remove);
 
 // {METHOD} /api/orders/:orderId
