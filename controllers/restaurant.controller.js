@@ -81,9 +81,9 @@ function isManagerExist(openId) {
 }
 
 function getRestaurantDetails(req, res, next) {
-  const { restaurantId } = req.query;
+  const { restaurantId, openId } = req.query;
 
-  console.log("restaurantId: " + restaurantId);
+  console.log("restaurantId: " + restaurantId + " openId: " + openId);
   if (!restaurantId) {
     res.json({
       success: false,
@@ -99,7 +99,7 @@ function getRestaurantDetails(req, res, next) {
         if (rest) {
           console.log(rest);
           Managers.get({
-            'restaurantId': restaurantId
+            'openId': openId
           }).then(mgr => {
             if (mgr) {
               var data = {

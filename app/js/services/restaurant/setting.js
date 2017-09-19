@@ -4,7 +4,7 @@ define(['services/base'], function (Service) {
     getRestaurantInfo: function (data) {
       return Service.getData({
         method: 'get',
-        url: '/api/restaurant/getInfo?restaurantId=' + data.restaurantId,
+        url: '/api/restaurant/getInfo?restaurantId=' + data.restaurantId + '&openId=' + data.openId,
         data: ''
       });
     },
