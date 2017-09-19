@@ -42,8 +42,8 @@ function refreshToken() {
   }, 7000*1000);
 }
 
-function getDeptQrCode(hospId, deptId) {
-  var sceneStr = "channel1-" + hospId + "$" + deptId;
+function getDeskQrCode(hospId, deskId) {
+  var sceneStr = "channel1-" + hospId + "$" + deskId;
   return WechatCommon.getQrCode(wechatAccessToken, sceneStr, 0);
 }
 
@@ -103,6 +103,7 @@ function handleManager(openId, eventKey, res, restId, isSupperMgr) {
     var headImgUrl = result.headimgurl;
     var remark = result.remark;
     var subscribeStatus = 1;
+    var superManager = 0;
     var disabled;
     var restaurantId = "";
     var departmentId = "";
@@ -302,7 +303,12 @@ function scan(message, req, res) {
       }
     }
     else {
-      res.reply('此管理员不存在！');
+      //res.reply('此管理员不存在！');
+      // Create a new manager
+      if (message.EventKey) {
+        console.log("EventKey: " + message.EventKey);
+        handleManager(openId, message.EventKey, res);
+      }
     }
   })
   .catch(e => next(e));
@@ -369,5 +375,5 @@ function createManager(openId, restaurantId, isSupperMgr) {
 }
 
 module.exports = {
-  init, getDeptQrCode, all, getAccessUserOpenId, getRestaurantQrCode, sendMessage, createManager,
+  init, getDeskQrCode, all, getAccessUserOpenId, getRestaurantQrCode, sendMessage, createManager,
 };

@@ -284,7 +284,7 @@ function addDesk(req, res, next) {
                   }
 
                   if (i < len) {
-                    wechatRestaurant.getRestaurantQrCode(restaurantId, deskList[i]._id)
+                    wechatRestaurant.getDeskQrCode(restaurantId, deskList[i]._id)
                     .then(result => {
 
                         console.log("Wechat Qr Code URL for restaurant: " + result.urlQrCode);
